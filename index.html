@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>灵瑞集 · 暖心陪伴</title>
+<style>
+  :root {
+    --bg: #fdf6f0;
+    --card-bg: #fffdf8;
+    --text: #4a3728;
+    --text-light: #7d6b5d;
+    --accent: #c1734a;
+    --accent-soft: #e8c9a0;
+    --border: #e0d3c0;
+    --shadow: 0 2px 16px rgba(120, 80, 40, 0.08);
+    --radius: 16px;
+    --font-cn: 'STSong', 'Songti SC', 'Noto Serif SC', 'KaiTi', 'STKaiti', 'SimSun', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-cn);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(200, 160, 120, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(180, 140, 100, 0.06) 0%, transparent 50%);
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+    min-height: 600px;
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #d4a574, #c1734a, #b8936e, #d4a574);
+    border-radius: 24px 24px 0 0;
+  }
+
+  .screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeSlideIn 0.5s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .opening-icon { font-size: 56px; margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
+  .opening-title { font-size: 22px; font-weight: bold; color: var(--accent); margin-bottom: 20px; letter-spacing: 2px; }
+  .opening-text { text-align: center; line-height: 2; color: var(--text-light); font-size: 15px; margin-bottom: 32px; }
+  .opening-text p { margin-bottom: 8px; }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-family: var(--font-cn);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #c1734a, #b8936e);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(180, 120, 80, 0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(180, 120, 80, 0.4); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+  .btn-outline:hover { background: rgba(193, 115, 74, 0.06); }
+
+  .section-label { font-size: 13px; color: var(--accent); letter-spacing: 3px; margin-bottom: 8px; }
+  .section-title { font-size: 20px; font-weight: bold; color: var(--text); margin-bottom: 24px; text-align: center; line-height: 1.6; }
+
+  .card-list { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-bottom: 20px; }
+
+  .card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .card:hover { border-color: var(--accent); background: #fef9f4; transform: translateX(4px); box-shadow: 0 2px 8px rgba(180, 120, 80, 0.1); }
+  .card:active { transform: scale(0.98); }
+  .card .card-icon { font-size: 28px; margin-bottom: 6px; display: block; }
+
+  .pet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 20px; }
+
+  .pet-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+  }
+  .pet-card:hover { border-color: var(--accent); background: #fef9f4; transform: translateY(-3px); box-shadow: 0 4px 12px rgba(180, 120, 80, 0.12); }
+  .pet-card:active { transform: scale(0.96); }
+  .pet-card .pet-img { width: 80px; height: 80px; display: block; margin: 0 auto 6px; object-fit: contain; }
+  .pet-card .pet-name { font-size: 16px; font-weight: bold; color: var(--text); }
+  .pet-card .pet-role { font-size: 11px; color: var(--accent); margin-top: 2px; }
+  .pet-card .pet-tags { font-size: 10px; color: var(--text-light); margin-top: 4px; line-height: 1.4; }
+
+  .dialogue-pet-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+  .dialogue-pet-name { font-size: 18px; font-weight: bold; color: var(--accent); margin-bottom: 4px; }
+  .dialogue-pet-role { font-size: 12px; color: var(--text-light); margin-bottom: 20px; letter-spacing: 1px; }
+
+  .dialogue-bubble {
+    background: #fef9f4;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 2;
+    font-size: 15px;
+    color: var(--text);
+    width: 100%;
+  }
+
+  .branch-options { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+
+  .branch-btn {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text);
+    font-family: var(--font-cn);
+    transition: all 0.25s ease;
+    line-height: 1.5;
+  }
+  .branch-btn:hover { border-color: var(--accent); background: #fef9f4; transform: translateX(3px); }
+  .branch-btn .branch-num {
+    display: inline-block;
+    width: 22px; height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 50%;
+    font-size: 12px;
+    margin-right: 8px;
+  }
+
+  .feedback-card {
+    width: 100%;
+    background: linear-gradient(180deg, #fef9f4 0%, #fdf6f0 100%);
+    border: 2px solid var(--accent-soft);
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(180, 140, 100, 0.12);
+  }
+  .feedback-title { font-size: 18px; font-weight: bold; color: var(--accent); margin-bottom: 20px; letter-spacing: 2px; }
+  .feedback-pet-img { width: 140px; height: 140px; object-fit: contain; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto; }
+  .feedback-pet-name { font-size: 16px; color: var(--text); font-weight: bold; }
+  .feedback-divider { width: 60px; height: 1px; background: var(--accent-soft); margin: 16px auto; }
+  .feedback-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dotted var(--border); font-size: 14px; }
+  .feedback-row:last-child { border-bottom: none; }
+  .feedback-label { color: var(--text-light); flex-shrink: 0; margin-right: 12px; }
+  .feedback-value { color: var(--text); text-align: right; font-weight: bold; }
+  .feedback-quote { margin-top: 20px; padding: 16px; background: rgba(200, 160, 120, 0.08); border-radius: 12px; font-size: 15px; color: var(--accent); line-height: 1.8; border-left: 3px solid var(--accent-soft); }
+  .feedback-footer { margin-top: 16px; font-size: 12px; color: var(--text-light); letter-spacing: 2px; }
+
+  .pet-video {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 16px;
+    outline: none;
+    background: #000;
+  }
+
+  .back-link {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-light);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: var(--font-cn);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  @media (max-width: 440px) {
+    .container { padding: 28px 18px; border-radius: 20px; }
+    .pet-grid { gap: 8px; }
+    .pet-card { padding: 10px 6px; }
+    .pet-card .pet-img { width: 60px; height: 60px; }
+    .pet-card .pet-name { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="app">
+  <!-- Screen 0: Opening -->
+  <div class="screen active" id="screen-opening">
+    <div class="opening-icon">🌙</div>
+    <div class="opening-title">灵瑞集 · 暖心陪伴</div>
+    <div class="opening-text">
+      <p>今天的你，有点累。</p>
+      <p>好像也没有发生天大的事，<br>就是突然提不起劲、心里闷闷的，<br>觉得自己有些糟糕。</p>
+      <p>没关系，不用逼自己立刻开心。<br>此刻，灵瑞集的灵兽来到你身边，<br>愿意安静陪伴你度过这段低落时光。</p>
+    </div>
+    <button class="btn btn-primary" onclick="goToScreen('screen-emotion')">开始倾诉</button>
+  </div>
+
+  <!-- Screen 1: Emotion Selection -->
+  <div class="screen" id="screen-emotion">
+    <div class="section-label">STEP 1</div>
+    <div class="section-title">现在的你，<br>更接近哪种状态？</div>
+    <div class="card-list" id="emotion-list"></div>
+    <button class="back-link" onclick="goToScreen('screen-opening')">← 返回</button>
+  </div>
+
+  <!-- Screen 2: Pet Selection -->
+  <div class="screen" id="screen-pet">
+    <div class="section-label">STEP 2</div>
+    <div class="section-title">选择一只灵宠<br>陪你度过这段时光</div>
+    <div class="pet-grid" id="pet-grid"></div>
+    <button class="back-link" onclick="goToScreen('screen-emotion')">← 重新选择情绪</button>
+  </div>
+
+  <!-- Screen 3: Pet Opening + Branch Selection -->
+  <div class="screen" id="screen-branch">
+    <div class="section-label">STEP 3</div>
+    <div id="branch-pet-img"></div>
+    <div class="dialogue-pet-name" id="branch-pet-name"></div>
+    <div class="dialogue-pet-role" id="branch-pet-role"></div>
+    <div class="dialogue-bubble" id="branch-opening"></div>
+    <div class="section-title" style="font-size:16px; margin-bottom:14px;">告诉我，此刻的你更像哪一种状态？</div>
+    <div class="branch-options" id="branch-options"></div>
+    <button class="back-link" onclick="goToScreen('screen-pet')">← 换一只灵宠</button>
+  </div>
+
+  <!-- Screen 4: Dialogue Result -->
+  <div class="screen" id="screen-dialogue">
+    <div class="section-label">暖心对话</div>
+    <div id="dialogue-pet-img"></div>
+    <div class="dialogue-pet-name" id="dialogue-pet-name"></div>
+    <div class="dialogue-bubble" id="dialogue-text"></div>
+    <button class="btn btn-primary" onclick="playPetVideo()">继续</button>
+  </div>
+
+  <!-- Screen 5: Pet Video -->
+  <div class="screen" id="screen-video">
+    <div class="section-label">瑞兽时刻</div>
+    <video id="pet-video" class="pet-video" playsinline webkit-playsinline></video>
+    <p style="color:var(--text-light);font-size:13px;margin-top:12px;">视频播放完毕将自动继续...</p>
+  </div>
+
+  <!-- Screen 6: Common Ending (screen 5 is video) -->
+  <div class="screen" id="screen-ending">
+    <div class="opening-icon">✨</div>
+    <div class="opening-title">今天的坏情绪就到此为止吧</div>
+    <div class="opening-text">
+      <p>你不必一直积极、一直坚强、一直优秀。</p>
+      <p>你可以疲惫、可以低落、可以暂时停下脚步。</p>
+      <p>负面情绪终会散去，<br>温柔与力量会留在心底。</p>
+      <p>愿往后的日子，心有瑞兽相伴，<br>岁岁安然，日日明朗。</p>
+    </div>
+    <button class="btn btn-primary" onclick="showFeedback()">查看我的情绪治愈日记</button>
+  </div>
+
+  <!-- Screen 7: Feedback Card -->
+  <div class="screen" id="screen-feedback">
+    <div class="section-label">我的情绪治愈日记</div>
+    <div class="feedback-card" id="feedback-card"></div>
+    <button class="btn btn-outline" onclick="restartGame()" style="margin-top:12px;">🔄 重新开始</button>
+  </div>
+</div>
+
+<script>
+// ==================== GAME DATA ====================
+var PETS = [
+  {
+    id: 'baize',
+    img: 'photo/白泽.png',
+    video: 'vedio/白泽.mp4',
+    name: '白泽',
+    role: '学业智慧治愈官',
+    tags: '学业焦虑 · 备考压力 · 学习自我否定',
+    style: '理性疏导、沉稳劝勉、拆解焦虑',
+    opening: '我看见你最近一直在硬撑。你已经很努力了，只是暂时没有看到结果。告诉我，此刻的你更像哪一种状态？',
+    branches: [
+      { label: '我很焦虑，怕考不好、怕跟不上',
+        dialogue: '焦虑不是懦弱，焦虑是你想要变好的证明。很多人看似轻松，其实都在偷偷承压。你不用一次性追上所有人，今天比昨天稳住一点点，就是胜利。学习不是百米冲刺，而是漫长赶路，允许自己慢一点，但别停下。',
+        feedback: { emotion: '学业高焦虑、心态过度紧绷', quote: '你不必闪闪发光，也可以慢慢成长。', keywords: '稳住、积累、厚积薄发', blessing: '所有默默刷题的夜晚，终会换来从容的未来。' } },
+      { label: '我学不进去，很疲惫，越学越否定自己',
+        dialogue: '疲惫的时候，不用强迫自己时刻保持高效。人不是机器，不可能永远不停运转。学不进去就休息一会儿，这不是偷懒，是蓄力。你不需要时时刻刻都优秀，你只需要不放弃自己。',
+        feedback: { emotion: '学习疲惫、动力耗竭、自我否定', quote: '累了就歇歇，成长从不急于一时。', keywords: '松弛、接纳、续航', blessing: '慢慢来，你的节奏，刚刚好。' } },
+      { label: '任务太多，思绪很乱，不知道从哪里开始',
+        dialogue: '乱的时候，不要总想完成全部，先专注做好一件小事。放下完美主义，别执着于一次性做到最好。先行动起来，再慢慢完善，一点点拆解难题，心头的乌云自会慢慢散开。',
+        feedback: { emotion: '任务堆积、思绪杂乱、无力启动', quote: '大事拆解，小事坚持。', keywords: '行动、拆解、破局', blessing: '万事开头难，你迈出第一步就已经赢了。' } }
+    ]
+  },
+  {
+    id: 'jiuwei',
+    img: 'photo/九尾狐.png',
+    video: 'vedio/九尾狐.mp4',
+    name: '九尾狐',
+    role: '情绪树洞治愈官',
+    tags: '内心委屈 · 精神内耗 · 社交疲惫',
+    style: '温柔倾听、深度共情、柔性开导',
+    opening: '我知道，你最近把很多情绪都藏在了心里。你习惯懂事、体谅他人，凡事都自己消化。今天不用故作坚强，你可以尽情展露脆弱。',
+    branches: [
+      { label: '我总是想太多，过度内耗，活得很累',
+        dialogue: '你心思敏感、待人温柔，所以才会比旁人更疲惫。想得多并不是错，只是你太过善良。往后试着多偏爱自己一点，别人的评价、看法，都不该成为消耗你的理由。',
+        feedback: { emotion: '高敏感、精神内耗、自我消耗', quote: '别用别人的标准，为难自己。', keywords: '自爱、脱敏、释怀', blessing: '愿你心软有底线，善良有锋芒。' } },
+      { label: '人际关系太累，不想再刻意维系',
+        dialogue: '人际交往本就是一场筛选，而非强行捆绑。不必讨好所有人，也不必勉强留住每一段关系。合得来便相伴，合不来便随缘。独处从不是孤独，而是属于自己的自由。',
+        feedback: { emotion: '社交疲惫、人际心累、渴望独处', quote: '社交减负，是成年人最好的自愈。', keywords: '断舍离、自在、松弛', blessing: '独处自清欢，无心自安然。' } },
+      { label: '心里满是委屈，却没有人能懂我',
+        dialogue: '我都明白。你表面平静，内心却早已翻涌起伏。不必强求他人理解，你懂得心疼自己就足够了。你的委屈值得被看见，你的情绪值得被温柔对待。',
+        feedback: { emotion: '孤独委屈、无人共情、情绪压抑', quote: '你不需要人人懂你，你只需善待自己。', keywords: '自愈、温柔、和解', blessing: '风雨自渡，温柔自拥。' } }
+    ]
+  },
+  {
+    id: 'tianlu',
+    img: 'photo/天禄1.png',
+    video: 'vedio/天禄.mp4',
+    name: '天禄',
+    role: '元气开运治愈官',
+    tags: '诸事不顺 · 心态消沉 · 摆烂躺平',
+    style: '元气鼓励、正向打气、传递好运',
+    opening: '最近是不是诸事不顺、心情低落？别担心，坏情绪只是短暂路过，好运正在赶来的路上！',
+    branches: [
+      { label: '最近事事不顺，心态彻底崩了',
+        dialogue: '人生低谷，往往都是向上攀登的前奏。生活本就是起起落落的波浪线，不会一直走下坡路。当下的不顺，都是未来逆风翻盘的铺垫。',
+        feedback: { emotion: '运势低迷、心态崩塌、情绪消极', quote: '低谷藏好运，否极必泰来。', keywords: '翻盘、转机、向阳', blessing: '霉运散尽，福气满盈。' } },
+      { label: '只想摆烂，完全不想努力了',
+        dialogue: '可以允许自己短暂摆烂放松，但不要一直停滞不前。你只是暂时累了，并非失去了发光的能力。短暂停下脚步，是为了之后更好地出发。',
+        feedback: { emotion: '动力缺失、摆烂心态、情绪低迷', quote: '短暂停驻，只为更好奔赴。', keywords: '重启、振作、新生', blessing: '元气归位，好运重启。' } },
+      { label: '生活平淡麻木，对未来没有期待',
+        dialogue: '平淡不等于平庸，安稳的日常正是蓄力的时光。生活不会永远热烈，但处处都藏着细碎温柔。那些小小的美好，正在悄悄向你靠近。',
+        feedback: { emotion: '生活麻木、情绪平淡、缺乏期待', quote: '平凡日常，也藏温柔星光。', keywords: '发现、热爱、治愈', blessing: '岁岁安然，日日晴朗。' } }
+    ]
+  },
+  {
+    id: 'xuanguei',
+    img: 'photo/玄龟.png',
+    video: 'vedio/玄龟.mp4',
+    name: '玄龟',
+    role: '沉稳静心治愈官',
+    tags: '心绪浮躁 · 胡思乱想 · 焦虑急躁',
+    style: '慢节奏安抚、静心引导、沉淀心态',
+    opening: '心乱则万事纷扰。你近来太过急躁，总逼着自己快速得到结果。今天，我陪你慢慢静下心来。',
+    branches: [
+      { label: '内心浮躁，完全静不下来',
+        dialogue: '成长最忌急于求成，所有收获都需要时间沉淀。唯有心静，做事才能顺遂。试着放慢脚步，很多时候，稳，才是最快的前行方式。',
+        feedback: { emotion: '心绪浮躁、急于求成、内心慌乱', quote: '心稳路稳，心静路顺。', keywords: '沉淀、专注、从容', blessing: '静心守己，静待花开。' } },
+      { label: '总胡思乱想，思绪繁杂难以安眠',
+        dialogue: '大半烦恼，都是反复脑补出来的。事情远没有你想象中糟糕，未来也并不可怕。放下心中杂念，学着放过自己。',
+        feedback: { emotion: '思虑过重、精神紧绷、杂念丛生', quote: '心宽一寸，路宽一丈。', keywords: '放空、安宁、释怀', blessing: '夜夜安睡，日日心安。' } },
+      { label: '内心慌张，对未来感到十分迷茫',
+        dialogue: '不必提前为未来焦虑，前路是一步一步走出来的，不是凭空想出来的。把握好当下的每一刻，前路自然会逐渐明朗。',
+        feedback: { emotion: '未来迷茫、内心慌张、缺乏底气', quote: '脚踏实地，自然明朗。', keywords: '当下、踏实、坚定', blessing: '前路漫漫，亦有灿灿。' } }
+    ]
+  },
+  {
+    id: 'bixie',
+    img: 'photo/辟邪.png',
+    video: 'vedio/辟邪.mp4',
+    name: '辟邪',
+    role: '安全感守护官',
+    tags: '自卑胆怯 · 缺乏底气 · 内心不安',
+    style: '守护陪伴、赋能勇气、建立安全感',
+    opening: '不要害怕。所有不安、恐惧与忐忑，我都会为你挡下。你可以脆弱、可以胆怯，你始终有人守护。',
+    branches: [
+      { label: '内心自卑，总觉得自己不够好',
+        dialogue: '你不必做到完美，才值得被肯定与偏爱。哪怕平凡、偶尔笨拙、时有失误，你也是独一无二的存在，本身就足够美好。',
+        feedback: { emotion: '自我自卑、价值感低、自我否定', quote: '你本就很好，不必仰望别人。', keywords: '自信、接纳、自悦', blessing: '自带光芒，无需借光。' } },
+      { label: '畏惧压力与失败，不敢主动尝试',
+        dialogue: '失败并不可怕，留下遗憾才更让人惋惜。勇敢从不是毫无畏惧，而是明明害怕，依然选择向前。我会守护你的每一次尝试。',
+        feedback: { emotion: '畏难怯懦、恐惧失败、缺乏底气', quote: '大胆前行，有我守护。', keywords: '勇气、突破、无畏', blessing: '岁岁无忧，万事皆安。' } },
+      { label: '内心空空荡荡，极度缺乏安全感',
+        dialogue: '从此刻开始，你不再孤身一人。瑞气护身，百忧皆散。所有不安与惶恐，都会慢慢消散。',
+        feedback: { emotion: '内心空洞、缺乏安全感、情绪悬空', quote: '瑞兽相伴，岁岁安然。', keywords: '安稳、守护、笃定', blessing: '周身祥瑞，百邪不侵。' } }
+    ]
+  }
+];
+
+var EMOTIONS = [
+  { icon: '📚', label: '学业压力大，内心很焦虑', id: 'study' },
+  { icon: '💧', label: '心里委屈，过度内耗，情绪低落', id: 'inner' },
+  { icon: '🍂', label: '身心麻木，缺乏动力，不想努力', id: 'numb' }
+];
+
+// ==================== GAME STATE ====================
+var state = { selectedEmotion: null, selectedPet: null, selectedBranch: null };
+
+// ==================== SCREEN MANAGEMENT ====================
+function goToScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.getElementById(screenId);
+  if (target) { target.classList.add('active'); target.style.animation = 'none'; target.offsetHeight; target.style.animation = 'fadeSlideIn 0.5s ease'; }
+}
+
+// ==================== INIT ====================
+function initGame() {
+  state = { selectedEmotion: null, selectedPet: null, selectedBranch: null };
+  renderEmotionCards();
+  renderPetCards();
+  goToScreen('screen-opening');
+}
+
+function renderEmotionCards() {
+  var html = '';
+  for (var i = 0; i < EMOTIONS.length; i++) {
+    html += '<div class="card" onclick="selectEmotion(\'' + EMOTIONS[i].id + '\')"><span class="card-icon">' + EMOTIONS[i].icon + '</span>' + EMOTIONS[i].label + '</div>';
+  }
+  document.getElementById('emotion-list').innerHTML = html;
+}
+
+function renderPetCards() {
+  var html = '';
+  for (var i = 0; i < PETS.length; i++) {
+    var p = PETS[i];
+    html += '<div class="pet-card" onclick="selectPet(\'' + p.id + '\')"><img class="pet-img" src="' + p.img + '" alt="' + p.name + '"><div class="pet-name">' + p.name + '</div><div class="pet-role">' + p.role + '</div><div class="pet-tags">' + p.tags + '</div></div>';
+  }
+  document.getElementById('pet-grid').innerHTML = html;
+}
+
+// ==================== GAME FLOW ====================
+function selectEmotion(emotionId) {
+  for (var i = 0; i < EMOTIONS.length; i++) {
+    if (EMOTIONS[i].id === emotionId) { state.selectedEmotion = EMOTIONS[i]; break; }
+  }
+  goToScreen('screen-pet');
+}
+
+function selectPet(petId) {
+  for (var i = 0; i < PETS.length; i++) {
+    if (PETS[i].id === petId) { state.selectedPet = PETS[i]; break; }
+  }
+  renderBranchScreen();
+  goToScreen('screen-branch');
+}
+
+function renderBranchScreen() {
+  var pet = state.selectedPet;
+  document.getElementById('branch-pet-img').innerHTML = '<img class="dialogue-pet-img" src="' + pet.img + '" alt="' + pet.name + '">';
+  document.getElementById('branch-pet-name').textContent = pet.name + ' · ' + pet.role;
+  document.getElementById('branch-pet-role').textContent = '陪伴风格：' + pet.style;
+  document.getElementById('branch-opening').textContent = pet.opening;
+
+  var html = '';
+  for (var i = 0; i < pet.branches.length; i++) {
+    html += '<button class="branch-btn" onclick="selectBranch(' + i + ')"><span class="branch-num">' + (i+1) + '</span>' + pet.branches[i].label + '</button>';
+  }
+  document.getElementById('branch-options').innerHTML = html;
+}
+
+function selectBranch(index) {
+  state.selectedBranch = index;
+  var pet = state.selectedPet;
+  var branch = pet.branches[index];
+  document.getElementById('dialogue-pet-img').innerHTML = '<img class="dialogue-pet-img" src="' + pet.img + '" alt="' + pet.name + '">';
+  document.getElementById('dialogue-pet-name').textContent = pet.name + ' 对你说：';
+  document.getElementById('dialogue-text').textContent = branch.dialogue;
+  goToScreen('screen-dialogue');
+}
+
+function playPetVideo() {
+  var pet = state.selectedPet;
+  var video = document.getElementById('pet-video');
+  video.src = pet.video;
+  video.load();
+  goToScreen('screen-video');
+  video.play().catch(function() { /* autoplay blocked, user can tap */ });
+  video.onended = function() {
+    showEnding();
+  };
+}
+
+function showEnding() {
+  goToScreen('screen-ending');
+}
+
+function showFeedback() {
+  var pet = state.selectedPet;
+  var branch = pet.branches[state.selectedBranch];
+
+  var html = '<div class="feedback-title">✨ 我的情绪治愈日记</div>';
+  html += '<img class="feedback-pet-img" src="' + pet.img + '" alt="' + pet.name + '">';
+  html += '<div class="feedback-pet-name">专属守护灵宠 · ' + pet.name + '</div>';
+  html += '<div class="feedback-divider"></div>';
+  html += '<div class="feedback-row"><span class="feedback-label">今日情绪</span><span class="feedback-value">' + branch.feedback.emotion + '</span></div>';
+  html += '<div class="feedback-row"><span class="feedback-label">自愈关键词</span><span class="feedback-value">' + branch.feedback.keywords + '</span></div>';
+  html += '<div class="feedback-row"><span class="feedback-label">今日祥瑞祝福</span><span class="feedback-value">' + branch.feedback.blessing + '</span></div>';
+  html += '<div class="feedback-quote">「' + branch.feedback.quote + '」</div>';
+  html += '<div class="feedback-footer">灵瑞集 · 暖心陪伴</div>';
+
+  document.getElementById('feedback-card').innerHTML = html;
+  goToScreen('screen-feedback');
+}
+
+function restartGame() {
+  initGame();
+}
+
+// ==================== START ====================
+initGame();
+</script>
+</body>
+</html>
