@@ -4,245 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>灵瑞集 · 暖心陪伴</title>
-<style>
-  :root {
-    --bg: #fdf6f0;
-    --card-bg: #fffdf8;
-    --text: #4a3728;
-    --text-light: #7d6b5d;
-    --accent: #c1734a;
-    --accent-soft: #e8c9a0;
-    --border: #e0d3c0;
-    --shadow: 0 2px 16px rgba(120, 80, 40, 0.08);
-    --radius: 16px;
-    --font-cn: 'STSong', 'Songti SC', 'Noto Serif SC', 'KaiTi', 'STKaiti', 'SimSun', serif;
-  }
+<style>:root{--bg:#fdf6f0;--card-bg:#fffdf8;--text:#4a3728;--text-light:#7d6b5d;--accent:#c1734a;--accent-soft:#e8c9a0;--border:#e0d3c0;--shadow:0 2px 16px rgba(120,80,40,.08);--radius:16px;--font-cn:'STSong','Songti SC','KaiTi','SimSun',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-cn);background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background-image:radial-gradient(ellipse at 20% 20%,rgba(200,160,120,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(180,140,100,.06) 0%,transparent 50%)}
+.container{width:100%;max-width:420px;min-height:600px;background:var(--card-bg);border-radius:24px;box-shadow:var(--shadow);padding:36px 28px;position:relative;overflow:hidden;border:1px solid var(--border)}
+.container::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#d4a574,#c1734a,#b8936e,#d4a574);border-radius:24px 24px 0 0}
+.screen{display:none;flex-direction:column;align-items:center;animation:fadeSlideIn .5s ease}
+.screen.active{display:flex}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.opening-icon{font-size:56px;margin-bottom:24px;animation:float 3s ease-in-out infinite}
+.opening-title{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:20px;letter-spacing:2px}
+.opening-text{text-align:center;line-height:2;color:var(--text-light);font-size:15px;margin-bottom:32px}
+.opening-text p{margin-bottom:8px}
+.btn{display:inline-block;padding:12px 40px;border:none;border-radius:30px;font-size:16px;font-family:var(--font-cn);cursor:pointer;transition:all .3s;letter-spacing:1px}
+.btn-primary{background:linear-gradient(135deg,#c1734a,#b8936e);color:#fff;box-shadow:0 4px 12px rgba(180,120,80,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(180,120,80,.4)}.btn-primary:active{transform:translateY(0)}
+.btn-outline{background:0 0;color:var(--accent);border:1.5px solid var(--accent)}.btn-outline:hover{background:rgba(193,115,74,.06)}
+.btn-sm{padding:8px 22px;font-size:13px}
+.section-label{font-size:13px;color:var(--accent);letter-spacing:3px;margin-bottom:8px}
+.section-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:24px;text-align:center;line-height:1.6}
+.card-list{display:flex;flex-direction:column;gap:12px;width:100%;margin-bottom:20px}
+.card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;cursor:pointer;transition:all .25s;text-align:center;font-size:15px;color:var(--text)}.card:hover{border-color:var(--accent);background:#fef9f4;transform:translateX(4px);box-shadow:0 2px 8px rgba(180,120,80,.1)}.card:active{transform:scale(.98)}
+.card .card-icon{font-size:28px;margin-bottom:6px;display:block}
+.pet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:20px}
+.pet-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 10px;cursor:pointer;transition:all .25s;text-align:center}.pet-card:hover{border-color:var(--accent);background:#fef9f4;transform:translateY(-3px);box-shadow:0 4px 12px rgba(180,120,80,.12)}.pet-card:active{transform:scale(.96)}
+.pet-card .pet-img{width:80px;height:80px;display:block;margin:0 auto 6px;object-fit:contain}
+.pet-card .pet-name{font-size:16px;font-weight:700;color:var(--text)}.pet-card .pet-role{font-size:11px;color:var(--accent);margin-top:2px}.pet-card .pet-tags{font-size:10px;color:var(--text-light);margin-top:4px;line-height:1.4}
+.dialogue-pet-img{width:120px;height:120px;object-fit:contain;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+.dialogue-pet-name{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:4px}.dialogue-pet-role{font-size:12px;color:var(--text-light);margin-bottom:20px;letter-spacing:1px}
+.dialogue-bubble{background:#fef9f4;border:1px solid var(--border);border-radius:18px;padding:20px 24px;margin-bottom:24px;text-align:center;line-height:2;font-size:15px;color:var(--text);width:100%}
+.branch-options{display:flex;flex-direction:column;gap:10px;width:100%}
+.branch-btn{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 18px;cursor:pointer;text-align:left;font-size:14px;color:var(--text);font-family:var(--font-cn);transition:all .25s;line-height:1.5}.branch-btn:hover{border-color:var(--accent);background:#fef9f4;transform:translateX(3px)}
+.branch-btn .branch-num{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;background:var(--accent-soft);color:var(--accent);border-radius:50%;font-size:12px;margin-right:8px}
+.feedback-card{width:100%;background:linear-gradient(180deg,#fef9f4 0%,#fdf6f0 100%);border:2px solid var(--accent-soft);border-radius:20px;padding:28px 22px;text-align:center;margin-bottom:20px;box-shadow:0 4px 20px rgba(180,140,100,.12)}
+.feedback-title{font-size:18px;font-weight:700;color:var(--accent);margin-bottom:20px;letter-spacing:2px}.feedback-pet-img{width:140px;height:140px;object-fit:contain;margin-bottom:8px;display:block;margin-left:auto;margin-right:auto}.feedback-pet-name{font-size:16px;color:var(--text);font-weight:700}.feedback-divider{width:60px;height:1px;background:var(--accent-soft);margin:16px auto}.feedback-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dotted var(--border);font-size:14px}.feedback-row:last-child{border-bottom:none}.feedback-label{color:var(--text-light);flex-shrink:0;margin-right:12px}.feedback-value{color:var(--text);text-align:right;font-weight:700}.feedback-quote{margin-top:20px;padding:16px;background:rgba(200,160,120,.08);border-radius:12px;font-size:15px;color:var(--accent);line-height:1.8;border-left:3px solid var(--accent-soft)}.feedback-footer{margin-top:16px;font-size:12px;color:var(--text-light);letter-spacing:2px}
+.pet-video{width:100%;max-width:340px;border-radius:16px;outline:0;background:#000}
+.back-link{margin-top:16px;font-size:13px;color:var(--text-light);cursor:pointer;background:0 0;border:none;font-family:var(--font-cn);text-decoration:underline;text-underline-offset:3px}.back-link:hover{color:var(--accent)}
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* === New Module Styles === */
+.mood-textarea{width:100%;min-height:100px;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;font-family:var(--font-cn);font-size:15px;color:var(--text);background:var(--card-bg);resize:none;outline:0;line-height:1.8;transition:border-color .3s}.mood-textarea:focus{border-color:var(--accent)}
+.recommend-list{display:flex;flex-direction:column;gap:14px;width:100%;margin-bottom:20px}
+.recommend-card{background:var(--card-bg);border:1.5px solid var(--accent-soft);border-radius:var(--radius);padding:18px;display:flex;gap:14px;align-items:center;position:relative}
+.recommend-card .rec-img{width:60px;height:60px;border-radius:12px;object-fit:contain;flex-shrink:0;background:#fef9f4}
+.recommend-card .rec-info{flex:1;min-width:0}
+.recommend-card .rec-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px}
+.recommend-card .rec-reason{font-size:12px;color:var(--text-light);line-height:1.6}
+.recommend-card .rec-btn{flex-shrink:0;padding:8px 16px;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:20px;cursor:pointer;font-family:var(--font-cn);transition:all .2s}.rec-btn:hover{opacity:.85}
+.rec-badge{position:absolute;top:-8px;left:12px;background:linear-gradient(135deg,#c1734a,#b8936e);color:#fff;font-size:10px;padding:2px 10px;border-radius:10px;letter-spacing:1px}
+.album-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;width:100%;text-align:center;transition:all .25s}.album-card:hover{border-color:var(--accent-soft)}
+.album-card .album-img{width:100px;height:100px;object-fit:contain;margin-bottom:10px}
+.album-card .album-name{font-size:18px;font-weight:700;color:var(--text)}.album-card .album-role{font-size:12px;color:var(--accent);margin-top:4px}.album-card .album-tags{font-size:11px;color:var(--text-light);margin-top:6px;line-height:1.5}.album-card .album-desc{font-size:12px;color:var(--text-light);margin-top:10px;line-height:1.7;text-align:left;padding:10px;background:#fef9f4;border-radius:10px}.album-card .album-habits{font-size:11px;color:var(--accent);margin-top:8px;line-height:1.6}.album-actions{display:flex;gap:10px;margin-top:14px;justify-content:center;flex-wrap:wrap}
 
-  body {
-    font-family: var(--font-cn);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(200, 160, 120, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(180, 140, 100, 0.06) 0%, transparent 50%);
-  }
+/* Homepage */
+.home-pet-img{width:150px;height:150px;object-fit:contain;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+.greeting-bubble{background:#fef9f4;border:1px solid var(--border);border-radius:18px;padding:16px 20px;margin-bottom:16px;text-align:center;line-height:1.8;font-size:15px;color:var(--text);width:100%;position:relative}
+.affinity-bar-wrap{width:100%;margin-bottom:20px;text-align:center}
+.affinity-label{font-size:12px;color:var(--text-light);margin-bottom:6px;letter-spacing:1px}
+.affinity-bar{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:4px}
+.affinity-fill{height:100%;background:linear-gradient(90deg,#d4a574,#c1734a);border-radius:4px;transition:width .8s ease}
+.affinity-lv{font-size:11px;color:var(--accent)}
+.home-btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 
-  .container {
-    width: 100%;
-    max-width: 420px;
-    min-height: 600px;
-    background: var(--card-bg);
-    border-radius: 24px;
-    box-shadow: var(--shadow);
-    padding: 36px 28px;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
+/* Chat */
+.chat-area{width:100%;flex:1;overflow-y:auto;max-height:320px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;padding-right:4px}
+.chat-bubble{max-width:82%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.7;word-break:break-word}
+.chat-bubble.pet-msg{align-self:flex-start;background:#fef9f4;border:1px solid var(--border);border-bottom-left-radius:6px}
+.chat-bubble.user-msg{align-self:flex-end;background:var(--accent-soft);color:var(--text);border-bottom-right-radius:6px}
+.chat-input-row{display:flex;gap:8px;width:100%}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:24px;padding:10px 18px;font-family:var(--font-cn);font-size:14px;outline:0;background:var(--card-bg);color:var(--text)}.chat-input:focus{border-color:var(--accent)}
+.chat-send{width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:20px;cursor:pointer;flex-shrink:0;transition:all .2s}.chat-send:hover{opacity:.85}
+.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-soft);animation:typingBounce 1.4s infinite;margin:0 2px}.typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
 
-  .container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #d4a574, #c1734a, #b8936e, #d4a574);
-    border-radius: 24px 24px 0 0;
-  }
+/* Capture toast */
+.capture-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(74,55,40,.92);color:#fff;padding:20px 36px;border-radius:20px;font-size:18px;letter-spacing:2px;z-index:10000;animation:toastPop .6s ease;pointer-events:none}
+@keyframes toastPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}60%{transform:translate(-50%,-50%) scale(1.1)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 
-  .screen {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeSlideIn 0.5s ease;
-  }
-  .screen.active { display: flex; }
-
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-
-  .opening-icon { font-size: 56px; margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
-  .opening-title { font-size: 22px; font-weight: bold; color: var(--accent); margin-bottom: 20px; letter-spacing: 2px; }
-  .opening-text { text-align: center; line-height: 2; color: var(--text-light); font-size: 15px; margin-bottom: 32px; }
-  .opening-text p { margin-bottom: 8px; }
-
-  .btn {
-    display: inline-block;
-    padding: 12px 40px;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    font-family: var(--font-cn);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    letter-spacing: 1px;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, #c1734a, #b8936e);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(180, 120, 80, 0.3);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(180, 120, 80, 0.4); }
-  .btn-primary:active { transform: translateY(0); }
-
-  .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
-  .btn-outline:hover { background: rgba(193, 115, 74, 0.06); }
-
-  .section-label { font-size: 13px; color: var(--accent); letter-spacing: 3px; margin-bottom: 8px; }
-  .section-title { font-size: 20px; font-weight: bold; color: var(--text); margin-bottom: 24px; text-align: center; line-height: 1.6; }
-
-  .card-list { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-bottom: 20px; }
-
-  .card {
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    text-align: center;
-    font-size: 15px;
-    color: var(--text);
-  }
-  .card:hover { border-color: var(--accent); background: #fef9f4; transform: translateX(4px); box-shadow: 0 2px 8px rgba(180, 120, 80, 0.1); }
-  .card:active { transform: scale(0.98); }
-  .card .card-icon { font-size: 28px; margin-bottom: 6px; display: block; }
-
-  .pet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 20px; }
-
-  .pet-card {
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 10px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    text-align: center;
-  }
-  .pet-card:hover { border-color: var(--accent); background: #fef9f4; transform: translateY(-3px); box-shadow: 0 4px 12px rgba(180, 120, 80, 0.12); }
-  .pet-card:active { transform: scale(0.96); }
-  .pet-card .pet-img { width: 80px; height: 80px; display: block; margin: 0 auto 6px; object-fit: contain; }
-  .pet-card .pet-name { font-size: 16px; font-weight: bold; color: var(--text); }
-  .pet-card .pet-role { font-size: 11px; color: var(--accent); margin-top: 2px; }
-  .pet-card .pet-tags { font-size: 10px; color: var(--text-light); margin-top: 4px; line-height: 1.4; }
-
-  .dialogue-pet-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
-  .dialogue-pet-name { font-size: 18px; font-weight: bold; color: var(--accent); margin-bottom: 4px; }
-  .dialogue-pet-role { font-size: 12px; color: var(--text-light); margin-bottom: 20px; letter-spacing: 1px; }
-
-  .dialogue-bubble {
-    background: #fef9f4;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    text-align: center;
-    line-height: 2;
-    font-size: 15px;
-    color: var(--text);
-    width: 100%;
-  }
-
-  .branch-options { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-
-  .branch-btn {
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    cursor: pointer;
-    text-align: left;
-    font-size: 14px;
-    color: var(--text);
-    font-family: var(--font-cn);
-    transition: all 0.25s ease;
-    line-height: 1.5;
-  }
-  .branch-btn:hover { border-color: var(--accent); background: #fef9f4; transform: translateX(3px); }
-  .branch-btn .branch-num {
-    display: inline-block;
-    width: 22px; height: 22px;
-    line-height: 22px;
-    text-align: center;
-    background: var(--accent-soft);
-    color: var(--accent);
-    border-radius: 50%;
-    font-size: 12px;
-    margin-right: 8px;
-  }
-
-  .feedback-card {
-    width: 100%;
-    background: linear-gradient(180deg, #fef9f4 0%, #fdf6f0 100%);
-    border: 2px solid var(--accent-soft);
-    border-radius: 20px;
-    padding: 28px 22px;
-    text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(180, 140, 100, 0.12);
-  }
-  .feedback-title { font-size: 18px; font-weight: bold; color: var(--accent); margin-bottom: 20px; letter-spacing: 2px; }
-  .feedback-pet-img { width: 140px; height: 140px; object-fit: contain; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto; }
-  .feedback-pet-name { font-size: 16px; color: var(--text); font-weight: bold; }
-  .feedback-divider { width: 60px; height: 1px; background: var(--accent-soft); margin: 16px auto; }
-  .feedback-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dotted var(--border); font-size: 14px; }
-  .feedback-row:last-child { border-bottom: none; }
-  .feedback-label { color: var(--text-light); flex-shrink: 0; margin-right: 12px; }
-  .feedback-value { color: var(--text); text-align: right; font-weight: bold; }
-  .feedback-quote { margin-top: 20px; padding: 16px; background: rgba(200, 160, 120, 0.08); border-radius: 12px; font-size: 15px; color: var(--accent); line-height: 1.8; border-left: 3px solid var(--accent-soft); }
-  .feedback-footer { margin-top: 16px; font-size: 12px; color: var(--text-light); letter-spacing: 2px; }
-
-  .pet-video {
-    width: 100%;
-    max-width: 340px;
-    border-radius: 16px;
-    outline: none;
-    background: #000;
-  }
-
-  .back-link {
-    margin-top: 16px;
-    font-size: 13px;
-    color: var(--text-light);
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: var(--font-cn);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .back-link:hover { color: var(--accent); }
-
-  /* ===== Touch Particle Canvas ===== */
-  #particle-canvas {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%; height: 100%;
-    z-index: 9999;
-    pointer-events: none;
-  }
-
-  @media (max-width: 440px) {
-    .container { padding: 28px 18px; border-radius: 20px; }
-    .pet-grid { gap: 8px; }
-    .pet-card { padding: 10px 6px; }
-    .pet-card .pet-img { width: 60px; height: 60px; }
-    .pet-card .pet-name { font-size: 14px; }
-  }
+@media(max-width:440px){.container{padding:28px 18px;border-radius:20px}.pet-grid{gap:8px}.pet-card{padding:10px 6px}.pet-card .pet-img{width:60px;height:60px}.pet-card .pet-name{font-size:14px}}
 </style>
 </head>
 <body>
@@ -254,23 +94,77 @@
   <div class="screen active" id="screen-opening">
     <div class="opening-icon">🌙</div>
     <div class="opening-title">灵瑞集 · 暖心陪伴</div>
-    <div class="opening-text">
-      <p>今天的你，有点累。</p>
-      <p>好像也没有发生天大的事，<br>就是突然提不起劲、心里闷闷的，<br>觉得自己有些糟糕。</p>
-      <p>没关系，不用逼自己立刻开心。<br>此刻，灵瑞集的灵兽来到你身边，<br>愿意安静陪伴你度过这段低落时光。</p>
-    </div>
-    <button class="btn btn-primary" onclick="goToScreen('screen-emotion')">开始倾诉</button>
+    <div class="opening-text"><p>今天的你，有点累。</p><p>好像也没有发生天大的事，<br>就是突然提不起劲、心里闷闷的，<br>觉得自己有些糟糕。</p><p>没关系，不用逼自己立刻开心。<br>此刻，灵瑞集的灵兽来到你身边，<br>愿意安静陪伴你度过这段低落时光。</p></div>
+    <button class="btn btn-primary" onclick="startJourney()">开始倾诉</button>
   </div>
 
-  <!-- Screen 1: Emotion Selection -->
-  <div class="screen" id="screen-emotion">
+  <!-- Screen 1: Mood Input -->
+  <div class="screen" id="screen-mood-input">
     <div class="section-label">STEP 1</div>
-    <div class="section-title">现在的你，<br>更接近哪种状态？</div>
-    <div class="card-list" id="emotion-list"></div>
+    <div class="section-title">此刻的你，<br>心里装着什么？</div>
+    <textarea class="mood-textarea" id="mood-textarea" placeholder="写下你的心情碎片，不用很长，一句话就好…&#10;比如：今天复习了一天还是记不住，好焦虑"></textarea>
+    <button class="btn btn-primary" onclick="analyzeMood()" style="margin-top:16px;">✨ 帮我匹配灵宠</button>
+    <button class="back-link" onclick="goToScreen('screen-pet-album')">直接浏览灵宠图鉴 →</button>
     <button class="back-link" onclick="goToScreen('screen-opening')">← 返回</button>
   </div>
 
-  <!-- Screen 2: Pet Selection -->
+  <!-- Screen 2: Recommendation Result -->
+  <div class="screen" id="screen-recommend">
+    <div class="section-label">智能匹配</div>
+    <div class="section-title">这三只灵宠<br>最适合陪伴此刻的你</div>
+    <div class="recommend-list" id="recommend-list"></div>
+    <button class="back-link" onclick="goToScreen('screen-pet-album')">查看全部灵宠图鉴 →</button>
+    <button class="back-link" onclick="goToScreen('screen-mood-input')">← 重新输入心情</button>
+  </div>
+
+  <!-- Screen 3: Pet Album -->
+  <div class="screen" id="screen-pet-album">
+    <div class="section-label">灵宠图鉴</div>
+    <div class="section-title">认识每一只瑞兽</div>
+    <div id="album-list" style="width:100%;"></div>
+    <button class="back-link" onclick="goToScreen(hasBoundPet()?'screen-home':'screen-mood-input')">← 返回</button>
+  </div>
+
+  <!-- Screen 4: Homepage -->
+  <div class="screen" id="screen-home">
+    <div class="section-label">我的主页</div>
+    <img class="home-pet-img" id="home-pet-img" src="" alt="">
+    <div class="dialogue-pet-name" id="home-pet-name"></div>
+    <div id="pet-switcher"></div>
+    <div class="greeting-bubble" id="greeting-bubble"></div>
+    <div class="affinity-bar-wrap">
+      <div class="affinity-label">❤️ 羁绊值 · <span id="affinity-level">Lv.1 初识</span></div>
+      <div class="affinity-bar"><div class="affinity-fill" id="affinity-fill" style="width:0%"></div></div>
+      <div class="affinity-lv"><span id="affinity-num">0</span> / 100</div>
+    </div>
+    <div class="home-btn-row">
+      <button class="btn btn-primary btn-sm" onclick="openChat()">💬 找灵宠聊天</button>
+      <button class="btn btn-outline btn-sm" onclick="goToScreen('screen-pet-album')">📖 灵宠图鉴</button>
+      <button class="btn btn-outline btn-sm" onclick="goToScreen('screen-mood-input')">🔍 智能匹配</button>
+    </div>
+    <button class="back-link" onclick="unbindAllPets()">解绑全部灵宠，重新开始</button>
+  </div>
+
+  <!-- Screen 5: Chat -->
+  <div class="screen" id="screen-chat">
+    <div class="section-label" id="chat-pet-label">与白泽对话中</div>
+    <div class="chat-area" id="chat-area"></div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chat-input" placeholder="说点什么..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button class="chat-send" onclick="sendMessage()">↑</button>
+    </div>
+    <button class="back-link" onclick="backToHome()">← 返回主页</button>
+  </div>
+
+  <!-- Screen 6: Original Emotion Selection (kept for story replay) -->
+  <div class="screen" id="screen-emotion">
+    <div class="section-label">经典模式</div>
+    <div class="section-title">现在的你，<br>更接近哪种状态？</div>
+    <div class="card-list" id="emotion-list"></div>
+    <button class="back-link" onclick="goToScreen('screen-pet-album')">← 返回图鉴</button>
+  </div>
+
+  <!-- Screen 7: Pet Selection (original flow) -->
   <div class="screen" id="screen-pet">
     <div class="section-label">STEP 2</div>
     <div class="section-title">选择一只灵宠<br>陪你度过这段时光</div>
@@ -278,19 +172,19 @@
     <button class="back-link" onclick="goToScreen('screen-emotion')">← 重新选择情绪</button>
   </div>
 
-  <!-- Screen 3: Pet Opening + Branch Selection -->
+  <!-- Screen 8: Branch Selection -->
   <div class="screen" id="screen-branch">
     <div class="section-label">STEP 3</div>
     <div id="branch-pet-img"></div>
     <div class="dialogue-pet-name" id="branch-pet-name"></div>
     <div class="dialogue-pet-role" id="branch-pet-role"></div>
     <div class="dialogue-bubble" id="branch-opening"></div>
-    <div class="section-title" style="font-size:16px; margin-bottom:14px;">告诉我，此刻的你更像哪一种状态？</div>
+    <div class="section-title" style="font-size:16px;margin-bottom:14px;">告诉我，此刻的你更像哪一种状态？</div>
     <div class="branch-options" id="branch-options"></div>
     <button class="back-link" onclick="goToScreen('screen-pet')">← 换一只灵宠</button>
   </div>
 
-  <!-- Screen 4: Dialogue Result -->
+  <!-- Screen 9: Dialogue -->
   <div class="screen" id="screen-dialogue">
     <div class="section-label">暖心对话</div>
     <div id="dialogue-pet-img"></div>
@@ -299,27 +193,22 @@
     <button class="btn btn-primary" onclick="playPetVideo()">继续</button>
   </div>
 
-  <!-- Screen 5: Pet Video -->
+  <!-- Screen 10: Video -->
   <div class="screen" id="screen-video">
     <div class="section-label">瑞兽时刻</div>
     <video id="pet-video" class="pet-video" playsinline webkit-playsinline></video>
     <p style="color:var(--text-light);font-size:13px;margin-top:12px;">视频播放完毕将自动继续...</p>
   </div>
 
-  <!-- Screen 6: Common Ending (screen 5 is video) -->
+  <!-- Screen 11: Ending -->
   <div class="screen" id="screen-ending">
     <div class="opening-icon">✨</div>
     <div class="opening-title">今天的坏情绪就到此为止吧</div>
-    <div class="opening-text">
-      <p>你不必一直积极、一直坚强、一直优秀。</p>
-      <p>你可以疲惫、可以低落、可以暂时停下脚步。</p>
-      <p>负面情绪终会散去，<br>温柔与力量会留在心底。</p>
-      <p>愿往后的日子，心有瑞兽相伴，<br>岁岁安然，日日明朗。</p>
-    </div>
+    <div class="opening-text"><p>你不必一直积极、一直坚强、一直优秀。</p><p>你可以疲惫、可以低落、可以暂时停下脚步。</p><p>负面情绪终会散去，<br>温柔与力量会留在心底。</p><p>愿往后的日子，心有瑞兽相伴，<br>岁岁安然，日日明朗。</p></div>
     <button class="btn btn-primary" onclick="showFeedback()">查看我的情绪治愈日记</button>
   </div>
 
-  <!-- Screen 7: Feedback Card -->
+  <!-- Screen 12: Feedback Card -->
   <div class="screen" id="screen-feedback">
     <div class="section-label">我的情绪治愈日记</div>
     <div class="feedback-card" id="feedback-card"></div>
@@ -328,492 +217,793 @@
 </div>
 
 <script>
-// ==================== GAME DATA ====================
-var PETS = [
-  {
-    id: 'baize',
-    img: 'photo/白泽.png',
-    video: 'vedio/白泽.mp4',
-    name: '白泽',
-    role: '学业智慧治愈官',
-    tags: '学业焦虑 · 备考压力 · 学习自我否定',
-    style: '理性疏导、沉稳劝勉、拆解焦虑',
-    opening: '我看见你最近一直在硬撑。你已经很努力了，只是暂时没有看到结果。告诉我，此刻的你更像哪一种状态？',
-    branches: [
-      { label: '我很焦虑，怕考不好、怕跟不上',
-        dialogue: '焦虑不是懦弱，焦虑是你想要变好的证明。很多人看似轻松，其实都在偷偷承压。你不用一次性追上所有人，今天比昨天稳住一点点，就是胜利。学习不是百米冲刺，而是漫长赶路，允许自己慢一点，但别停下。',
-        feedback: { emotion: '学业高焦虑、心态过度紧绷', quote: '你不必闪闪发光，也可以慢慢成长。', keywords: '稳住、积累、厚积薄发', blessing: '所有默默刷题的夜晚，终会换来从容的未来。' } },
-      { label: '我学不进去，很疲惫，越学越否定自己',
-        dialogue: '疲惫的时候，不用强迫自己时刻保持高效。人不是机器，不可能永远不停运转。学不进去就休息一会儿，这不是偷懒，是蓄力。你不需要时时刻刻都优秀，你只需要不放弃自己。',
-        feedback: { emotion: '学习疲惫、动力耗竭、自我否定', quote: '累了就歇歇，成长从不急于一时。', keywords: '松弛、接纳、续航', blessing: '慢慢来，你的节奏，刚刚好。' } },
-      { label: '任务太多，思绪很乱，不知道从哪里开始',
-        dialogue: '乱的时候，不要总想完成全部，先专注做好一件小事。放下完美主义，别执着于一次性做到最好。先行动起来，再慢慢完善，一点点拆解难题，心头的乌云自会慢慢散开。',
-        feedback: { emotion: '任务堆积、思绪杂乱、无力启动', quote: '大事拆解，小事坚持。', keywords: '行动、拆解、破局', blessing: '万事开头难，你迈出第一步就已经赢了。' } }
-    ]
-  },
-  {
-    id: 'jiuwei',
-    img: 'photo/九尾狐.png',
-    video: 'vedio/九尾狐.mp4',
-    name: '九尾狐',
-    role: '情绪树洞治愈官',
-    tags: '内心委屈 · 精神内耗 · 社交疲惫',
-    style: '温柔倾听、深度共情、柔性开导',
-    opening: '我知道，你最近把很多情绪都藏在了心里。你习惯懂事、体谅他人，凡事都自己消化。今天不用故作坚强，你可以尽情展露脆弱。',
-    branches: [
-      { label: '我总是想太多，过度内耗，活得很累',
-        dialogue: '你心思敏感、待人温柔，所以才会比旁人更疲惫。想得多并不是错，只是你太过善良。往后试着多偏爱自己一点，别人的评价、看法，都不该成为消耗你的理由。',
-        feedback: { emotion: '高敏感、精神内耗、自我消耗', quote: '别用别人的标准，为难自己。', keywords: '自爱、脱敏、释怀', blessing: '愿你心软有底线，善良有锋芒。' } },
-      { label: '人际关系太累，不想再刻意维系',
-        dialogue: '人际交往本就是一场筛选，而非强行捆绑。不必讨好所有人，也不必勉强留住每一段关系。合得来便相伴，合不来便随缘。独处从不是孤独，而是属于自己的自由。',
-        feedback: { emotion: '社交疲惫、人际心累、渴望独处', quote: '社交减负，是成年人最好的自愈。', keywords: '断舍离、自在、松弛', blessing: '独处自清欢，无心自安然。' } },
-      { label: '心里满是委屈，却没有人能懂我',
-        dialogue: '我都明白。你表面平静，内心却早已翻涌起伏。不必强求他人理解，你懂得心疼自己就足够了。你的委屈值得被看见，你的情绪值得被温柔对待。',
-        feedback: { emotion: '孤独委屈、无人共情、情绪压抑', quote: '你不需要人人懂你，你只需善待自己。', keywords: '自愈、温柔、和解', blessing: '风雨自渡，温柔自拥。' } }
-    ]
-  },
-  {
-    id: 'tianlu',
-    img: 'photo/天禄1.png',
-    video: 'vedio/天禄.mp4',
-    name: '天禄',
-    role: '元气开运治愈官',
-    tags: '诸事不顺 · 心态消沉 · 摆烂躺平',
-    style: '元气鼓励、正向打气、传递好运',
-    opening: '最近是不是诸事不顺、心情低落？别担心，坏情绪只是短暂路过，好运正在赶来的路上！',
-    branches: [
-      { label: '最近事事不顺，心态彻底崩了',
-        dialogue: '人生低谷，往往都是向上攀登的前奏。生活本就是起起落落的波浪线，不会一直走下坡路。当下的不顺，都是未来逆风翻盘的铺垫。',
-        feedback: { emotion: '运势低迷、心态崩塌、情绪消极', quote: '低谷藏好运，否极必泰来。', keywords: '翻盘、转机、向阳', blessing: '霉运散尽，福气满盈。' } },
-      { label: '只想摆烂，完全不想努力了',
-        dialogue: '可以允许自己短暂摆烂放松，但不要一直停滞不前。你只是暂时累了，并非失去了发光的能力。短暂停下脚步，是为了之后更好地出发。',
-        feedback: { emotion: '动力缺失、摆烂心态、情绪低迷', quote: '短暂停驻，只为更好奔赴。', keywords: '重启、振作、新生', blessing: '元气归位，好运重启。' } },
-      { label: '生活平淡麻木，对未来没有期待',
-        dialogue: '平淡不等于平庸，安稳的日常正是蓄力的时光。生活不会永远热烈，但处处都藏着细碎温柔。那些小小的美好，正在悄悄向你靠近。',
-        feedback: { emotion: '生活麻木、情绪平淡、缺乏期待', quote: '平凡日常，也藏温柔星光。', keywords: '发现、热爱、治愈', blessing: '岁岁安然，日日晴朗。' } }
-    ]
-  },
-  {
-    id: 'xuanguei',
-    img: 'photo/玄龟.png',
-    video: 'vedio/玄龟.mp4',
-    name: '玄龟',
-    role: '沉稳静心治愈官',
-    tags: '心绪浮躁 · 胡思乱想 · 焦虑急躁',
-    style: '慢节奏安抚、静心引导、沉淀心态',
-    opening: '心乱则万事纷扰。你近来太过急躁，总逼着自己快速得到结果。今天，我陪你慢慢静下心来。',
-    branches: [
-      { label: '内心浮躁，完全静不下来',
-        dialogue: '成长最忌急于求成，所有收获都需要时间沉淀。唯有心静，做事才能顺遂。试着放慢脚步，很多时候，稳，才是最快的前行方式。',
-        feedback: { emotion: '心绪浮躁、急于求成、内心慌乱', quote: '心稳路稳，心静路顺。', keywords: '沉淀、专注、从容', blessing: '静心守己，静待花开。' } },
-      { label: '总胡思乱想，思绪繁杂难以安眠',
-        dialogue: '大半烦恼，都是反复脑补出来的。事情远没有你想象中糟糕，未来也并不可怕。放下心中杂念，学着放过自己。',
-        feedback: { emotion: '思虑过重、精神紧绷、杂念丛生', quote: '心宽一寸，路宽一丈。', keywords: '放空、安宁、释怀', blessing: '夜夜安睡，日日心安。' } },
-      { label: '内心慌张，对未来感到十分迷茫',
-        dialogue: '不必提前为未来焦虑，前路是一步一步走出来的，不是凭空想出来的。把握好当下的每一刻，前路自然会逐渐明朗。',
-        feedback: { emotion: '未来迷茫、内心慌张、缺乏底气', quote: '脚踏实地，自然明朗。', keywords: '当下、踏实、坚定', blessing: '前路漫漫，亦有灿灿。' } }
-    ]
-  },
-  {
-    id: 'bixie',
-    img: 'photo/辟邪.png',
-    video: 'vedio/辟邪.mp4',
-    name: '辟邪',
-    role: '安全感守护官',
-    tags: '自卑胆怯 · 缺乏底气 · 内心不安',
-    style: '守护陪伴、赋能勇气、建立安全感',
-    opening: '不要害怕。所有不安、恐惧与忐忑，我都会为你挡下。你可以脆弱、可以胆怯，你始终有人守护。',
-    branches: [
-      { label: '内心自卑，总觉得自己不够好',
-        dialogue: '你不必做到完美，才值得被肯定与偏爱。哪怕平凡、偶尔笨拙、时有失误，你也是独一无二的存在，本身就足够美好。',
-        feedback: { emotion: '自我自卑、价值感低、自我否定', quote: '你本就很好，不必仰望别人。', keywords: '自信、接纳、自悦', blessing: '自带光芒，无需借光。' } },
-      { label: '畏惧压力与失败，不敢主动尝试',
-        dialogue: '失败并不可怕，留下遗憾才更让人惋惜。勇敢从不是毫无畏惧，而是明明害怕，依然选择向前。我会守护你的每一次尝试。',
-        feedback: { emotion: '畏难怯懦、恐惧失败、缺乏底气', quote: '大胆前行，有我守护。', keywords: '勇气、突破、无畏', blessing: '岁岁无忧，万事皆安。' } },
-      { label: '内心空空荡荡，极度缺乏安全感',
-        dialogue: '从此刻开始，你不再孤身一人。瑞气护身，百忧皆散。所有不安与惶恐，都会慢慢消散。',
-        feedback: { emotion: '内心空洞、缺乏安全感、情绪悬空', quote: '瑞兽相伴，岁岁安然。', keywords: '安稳、守护、笃定', blessing: '周身祥瑞，百邪不侵。' } }
-    ]
-  }
+// ==================== EXTENDED PET DATA ====================
+var PETS = [{
+  id:'baize',img:'photo/白泽.png',video:'vedio/白泽.mp4',name:'白泽',role:'学业智慧治愈官',
+  tags:'学业焦虑 · 备考压力 · 学习自我否定',style:'理性疏导、沉稳劝勉、拆解焦虑',
+  coreTags:'温润智者 · 理性治愈 · 沉稳学长型',
+  personality:'白泽是灵瑞集最沉稳通透的智者灵宠，天生擅长拆解困惑、化解焦虑。性格极度温柔包容，从不苛责、不说教，拥有极强的耐心。理智且细腻，既理性帮玩家梳理杂乱学业压力，又能感知玩家的疲惫与自我否定。',
+  habits:'轻展书卷，指尖轻抚书页，自带墨香；倾听时微微垂眸，神色温柔专注；治愈结束后留下一缕温润微光，寓意笔墨生花。',
+  opening:'我看见你最近一直在硬撑。你已经很努力了，只是暂时没有看到结果。告诉我，此刻的你更像哪一种状态？',
+  branches:[
+    {label:'我很焦虑，怕考不好、怕跟不上',dialogue:'焦虑不是懦弱，焦虑是你想要变好的证明。很多人看似轻松，其实都在偷偷承压。你不用一次性追上所有人，今天比昨天稳住一点点，就是胜利。学习不是百米冲刺，而是漫长赶路，允许自己慢一点，但别停下。',feedback:{emotion:'学业高焦虑、心态过度紧绷',quote:'你不必闪闪发光，也可以慢慢成长。',keywords:'稳住、积累、厚积薄发',blessing:'所有默默刷题的夜晚，终会换来从容的未来。'}},
+    {label:'我学不进去，很疲惫，越学越否定自己',dialogue:'疲惫的时候，不用强迫自己时刻保持高效。人不是机器，不可能永远不停运转。学不进去就休息一会儿，这不是偷懒，是蓄力。你不需要时时刻刻都优秀，你只需要不放弃自己。',feedback:{emotion:'学习疲惫、动力耗竭、自我否定',quote:'累了就歇歇，成长从不急于一时。',keywords:'松弛、接纳、续航',blessing:'慢慢来，你的节奏，刚刚好。'}},
+    {label:'任务太多，思绪很乱，不知道从哪里开始',dialogue:'乱的时候，不要总想完成全部，先专注做好一件小事。放下完美主义，别执着于一次性做到最好。先行动起来，再慢慢完善，一点点拆解难题，心头的乌云自会慢慢散开。',feedback:{emotion:'任务堆积、思绪杂乱、无力启动',quote:'大事拆解，小事坚持。',keywords:'行动、拆解、破局',blessing:'万事开头难，你迈出第一步就已经赢了。'}}
+  ]},{
+  id:'jiuwei',img:'photo/九尾狐.png',video:'vedio/九尾狐.mp4',name:'九尾狐',role:'情绪树洞治愈官',
+  tags:'内心委屈 · 精神内耗 · 社交疲惫',style:'温柔倾听、深度共情、柔性开导',
+  coreTags:'温柔共情者 · 专属树洞 · 治愈姐姐型',
+  personality:'九尾狐是灵瑞集共情能力最强的灵宠，心思细腻、感知敏锐，能精准捕捉玩家藏在心底、不愿言说的委屈与内耗。温柔通透、极度善良，包容所有负面情绪，从不要求玩家坚强懂事。通透人性，懂敏感者的多想、懂事者的委屈、独处者的孤单。',
+  habits:'倾听时轻轻俯身，尾巴温柔轻扫地面；察觉玩家委屈时眼神变得柔软温润；治愈结束后落下细碎柔光，抚平心底褶皱。',
+  opening:'我知道，你最近把很多情绪都藏在了心里。你习惯懂事、体谅他人，凡事都自己消化。今天不用故作坚强，你可以尽情展露脆弱。',
+  branches:[
+    {label:'我总是想太多，过度内耗，活得很累',dialogue:'你心思敏感、待人温柔，所以才会比旁人更疲惫。想得多并不是错，只是你太过善良。往后试着多偏爱自己一点，别人的评价、看法，都不该成为消耗你的理由。',feedback:{emotion:'高敏感、精神内耗、自我消耗',quote:'别用别人的标准，为难自己。',keywords:'自爱、脱敏、释怀',blessing:'愿你心软有底线，善良有锋芒。'}},
+    {label:'人际关系太累，不想再刻意维系',dialogue:'人际交往本就是一场筛选，而非强行捆绑。不必讨好所有人，也不必勉强留住每一段关系。合得来便相伴，合不来便随缘。独处从不是孤独，而是属于自己的自由。',feedback:{emotion:'社交疲惫、人际心累、渴望独处',quote:'社交减负，是成年人最好的自愈。',keywords:'断舍离、自在、松弛',blessing:'独处自清欢，无心自安然。'}},
+    {label:'心里满是委屈，却没有人能懂我',dialogue:'我都明白。你表面平静，内心却早已翻涌起伏。不必强求他人理解，你懂得心疼自己就足够了。你的委屈值得被看见，你的情绪值得被温柔对待。',feedback:{emotion:'孤独委屈、无人共情、情绪压抑',quote:'你不需要人人懂你，你只需善待自己。',keywords:'自愈、温柔、和解',blessing:'风雨自渡，温柔自拥。'}}
+  ]},{
+  id:'tianlu',img:'photo/天禄1.png',video:'vedio/天禄.mp4',name:'天禄',role:'元气开运治愈官',
+  tags:'诸事不顺 · 心态消沉 · 摆烂躺平',style:'元气鼓励、正向打气、传递好运',
+  coreTags:'元气小太阳 · 好运锦鲤 · 活泼暖心型',
+  personality:'天禄是灵瑞集最鲜活开朗的灵宠，天性乐观豁达、元气充沛，自带祥瑞福气。性格活泼纯粹、阳光坦荡，擅长用最简单最治愈的方式消解消极心态。懂得接纳短暂摆烂与消沉，温柔包容所有低落状态，坚信低谷过后必有转机。',
+  habits:'出场时轻轻摇晃尾巴，自带灵动元气感；鼓励玩家时眼神明亮笑意满满；治愈结束后散落细碎金芒，寓意霉运散尽福气降临。',
+  opening:'最近是不是诸事不顺、心情低落？别担心，坏情绪只是短暂路过，好运正在赶来的路上！',
+  branches:[
+    {label:'最近事事不顺，心态彻底崩了',dialogue:'人生低谷，往往都是向上攀登的前奏。生活本就是起起落落的波浪线，不会一直走下坡路。当下的不顺，都是未来逆风翻盘的铺垫。',feedback:{emotion:'运势低迷、心态崩塌、情绪消极',quote:'低谷藏好运，否极必泰来。',keywords:'翻盘、转机、向阳',blessing:'霉运散尽，福气满盈。'}},
+    {label:'只想摆烂，完全不想努力了',dialogue:'可以允许自己短暂摆烂放松，但不要一直停滞不前。你只是暂时累了，并非失去了发光的能力。短暂停下脚步，是为了之后更好地出发。',feedback:{emotion:'动力缺失、摆烂心态、情绪低迷',quote:'短暂停驻，只为更好奔赴。',keywords:'重启、振作、新生',blessing:'元气归位，好运重启。'}},
+    {label:'生活平淡麻木，对未来没有期待',dialogue:'平淡不等于平庸，安稳的日常正是蓄力的时光。生活不会永远热烈，但处处都藏着细碎温柔。那些小小的美好，正在悄悄向你靠近。',feedback:{emotion:'生活麻木、情绪平淡、缺乏期待',quote:'平凡日常，也藏温柔星光。',keywords:'发现、热爱、治愈',blessing:'岁岁安然，日日晴朗。'}}
+  ]},{
+  id:'xuanguei',img:'photo/玄龟.png',video:'vedio/玄龟.mp4',name:'玄龟',role:'沉稳静心治愈官',
+  tags:'心绪浮躁 · 胡思乱想 · 焦虑急躁',style:'慢节奏安抚、静心引导、沉淀心态',
+  coreTags:'岁月沉静 · 静心智者 · 温柔长者型',
+  personality:'玄龟是灵瑞集最沉稳静谧的灵宠，历经岁月沉淀，心性淡然从容、通透安定。性格温和内敛、沉稳包容，不喜急躁、不追速成，深谙静心方能致远的道理。最擅长安抚浮躁杂乱慌张的内心，温柔引导放慢脚步、沉淀自我。',
+  habits:'静心陪伴时缓缓睁眼，气息平稳自带静谧气场；安抚时动作缓慢轻柔；治愈结束后萦绕温润静气，抚平杂念安定心神。',
+  opening:'心乱则万事纷扰。你近来太过急躁，总逼着自己快速得到结果。今天，我陪你慢慢静下心来。',
+  branches:[
+    {label:'内心浮躁，完全静不下来',dialogue:'成长最忌急于求成，所有收获都需要时间沉淀。唯有心静，做事才能顺遂。试着放慢脚步，很多时候，稳，才是最快的前行方式。',feedback:{emotion:'心绪浮躁、急于求成、内心慌乱',quote:'心稳路稳，心静路顺。',keywords:'沉淀、专注、从容',blessing:'静心守己，静待花开。'}},
+    {label:'总胡思乱想，思绪繁杂难以安眠',dialogue:'大半烦恼，都是反复脑补出来的。事情远没有你想象中糟糕，未来也并不可怕。放下心中杂念，学着放过自己。',feedback:{emotion:'思虑过重、精神紧绷、杂念丛生',quote:'心宽一寸，路宽一丈。',keywords:'放空、安宁、释怀',blessing:'夜夜安睡，日日心安。'}},
+    {label:'内心慌张，对未来感到十分迷茫',dialogue:'不必提前为未来焦虑，前路是一步一步走出来的，不是凭空想出来的。把握好当下的每一刻，前路自然会逐渐明朗。',feedback:{emotion:'未来迷茫、内心慌张、缺乏底气',quote:'脚踏实地，自然明朗。',keywords:'当下、踏实、坚定',blessing:'前路漫漫，亦有灿灿。'}}
+  ]},{
+  id:'bixie',img:'photo/辟邪.png',video:'vedio/辟邪.mp4',name:'辟邪',role:'安全感守护官',
+  tags:'自卑胆怯 · 缺乏底气 · 内心不安',style:'守护陪伴、赋能勇气、建立安全感',
+  coreTags:'强势守护 · 温柔撑腰 · 可靠守护者',
+  personality:'辟邪是灵瑞集最有安全感的守护型灵宠，本心纯粹、温柔正义，天生以守护人心驱散惶恐为己任。性格沉稳强势笃定温柔，自带强大气场，却唯独对玩家万般包容。坚定肯定玩家价值，为胆怯自卑不安的玩家撑腰，直面所有恐惧与压力。',
+  habits:'陪伴时周身萦绕温润瑞气，隔绝不安与惶恐；玩家自卑胆怯时会主动靠近稳稳守护在身侧；治愈结束后留存守护瑞气，寓意百忧皆散岁岁平安。',
+  opening:'不要害怕。所有不安、恐惧与忐忑，我都会为你挡下。你可以脆弱、可以胆怯，你始终有人守护。',
+  branches:[
+    {label:'内心自卑，总觉得自己不够好',dialogue:'你不必做到完美，才值得被肯定与偏爱。哪怕平凡、偶尔笨拙、时有失误，你也是独一无二的存在，本身就足够美好。',feedback:{emotion:'自我自卑、价值感低、自我否定',quote:'你本就很好，不必仰望别人。',keywords:'自信、接纳、自悦',blessing:'自带光芒，无需借光。'}},
+    {label:'畏惧压力与失败，不敢主动尝试',dialogue:'失败并不可怕，留下遗憾才更让人惋惜。勇敢从不是毫无畏惧，而是明明害怕，依然选择向前。我会守护你的每一次尝试。',feedback:{emotion:'畏难怯懦、恐惧失败、缺乏底气',quote:'大胆前行，有我守护。',keywords:'勇气、突破、无畏',blessing:'岁岁无忧，万事皆安。'}},
+    {label:'内心空空荡荡，极度缺乏安全感',dialogue:'从此刻开始，你不再孤身一人。瑞气护身，百忧皆散。所有不安与惶恐，都会慢慢消散。',feedback:{emotion:'内心空洞、缺乏安全感、情绪悬空',quote:'瑞兽相伴，岁岁安然。',keywords:'安稳、守护、笃定',blessing:'周身祥瑞，百邪不侵。'}}
+]},{
+  id:'machenggong',img:'photo/马成功.png',video:'vedio/马成功.mp4',name:'马成功',role:'活力成长治愈官',
+  tags:'想要放弃 · 不甘平庸 · 看不到希望',style:'热血鼓劲、助推成长、坚定信念',
+  coreTags:'热血少年 · 成长助推者 · 坚定信仰型',
+  personality:'马成功是灵瑞集最热血坚定的灵宠，永不言弃是刻在骨子里的信仰。相信所有咬牙坚持的付出终有回报，看似热血实则深刻理解坚持的痛苦与不易。不是盲目打鸡血，而是真正懂你的不甘与挣扎，在最难熬的时刻用最坚定的力量陪你走下去。',
+  habits:'出场时神采飞扬语气坚定；鼓励时目光灼灼充满信念感；治愈结束后留下一道金光，寓意策马奔腾终获成功。',
+  opening:'我知道你很累，无数次想要放弃，但我也清楚，你的心底从不愿甘于平庸。',
+  branches:[
+    {label:'坚持太过辛苦，我想要放弃',dialogue:'所有破茧逆袭，都来自日复一日的咬牙坚持。当下最难熬的时刻，往往就是迎来转机的节点。再坚持一下，曙光就在前方。',feedback:{emotion:'坚持疲惫、萌生退意、成长内耗',quote:'风雨兼程，终抵山海。',keywords:'坚持、逆袭、突破',blessing:'策马奔腾，终获成功。'}},
+    {label:'不甘平凡，却又无力改变现状',dialogue:'心中的不甘，就是你前行最大的动力。不必急于求成，一点点做出改变，日积月累便是巨大的成长。你远比自己想象中更加强大。',feedback:{emotion:'不甘平庸、能力焦虑、进退两难',quote:'点滴改变，成就新生。',keywords:'精进、蜕变、新生',blessing:'步履不停，终有所成。'}},
+    {label:'觉得自己一无是处，看不到未来希望',dialogue:'身处低谷只是暂时的蓄力，并不是人生的结局。现在所有的沉淀，都会成为未来翻盘的底气。你不会一直低落，未来一定会越来越好。',feedback:{emotion:'自我颓废、希望感低、消极认知',quote:'低谷蓄力，来日腾飞。',keywords:'翻盘、希望、新生',blessing:'前路浩荡，未来可期。'}}
+]}];
+
+var EMOTIONS=[
+  {icon:'📚',label:'学业压力大，内心很焦虑',id:'study'},
+  {icon:'💧',label:'心里委屈，过度内耗，情绪低落',id:'inner'},
+  {icon:'🍂',label:'身心麻木，缺乏动力，不想努力',id:'numb'}
 ];
 
-var EMOTIONS = [
-  { icon: '📚', label: '学业压力大，内心很焦虑', id: 'study' },
-  { icon: '💧', label: '心里委屈，过度内耗，情绪低落', id: 'inner' },
-  { icon: '🍂', label: '身心麻木，缺乏动力，不想努力', id: 'numb' }
-];
+// ==================== MOOD → PET KEYWORD MAP ====================
+var KEYWORD_PET_MAP = {
+  baize: '考试 备考 成绩 学不进去 刷题 跟不上 任务 完美主义 学 书 复习 论文 作业 绩点 挂科 考研 拖延 效率 背书 做题',
+  jiuwei: '委屈 内耗 想太多 孤独 没人懂 敏感 社交 人际 讨好 心累 懂事 藏 压抑 哭 难过 伤心 憋着 不被理解 朋友 合群',
+  tianlu: '不顺 倒霉 摆烂 麻木 没期待 没动力 平淡 无聊 躺平 运气 灰 丧 没意思 没劲 失望 颓 水逆 低谷',
+  xuanguei: '浮躁 静不下 胡思乱想 失眠 迷茫 慌张 急 静 未来 杂念 乱 睡不着 担心 焦虑未来 不知所措 慌',
+  bixie: '自卑 不敢 害怕 胆小 不够好 否定 空 不安 安全 失败 压力 怕错 不配 不值得 怯 畏惧 没底气',
+  machenggong: '放弃 坚持不住 不甘心 没希望 改变不了 认命 差距 平凡 做不到 无力 自暴自弃 前途 出路'
+};
+
+// ==================== CHAT INTENT DETECTION ====================
+var INTENT_KEYWORDS = {
+  tired:       '好累 疲惫 累死 累 撑不住 没力气 乏 困 倦',
+  complain:    '好烦 烦死 崩溃 受不了 糟透了 难受 不想活了 无语 倒霉 水逆',
+  self_negate: '我不行 太差 没用 废物 配不上 不值得 够不上 差劲 谁也 看不起 讨厌自己 无能 弱',
+  confused:    '怎么办 不知道 迷茫 迷路 该怎么 出路 未来 方向 选择 纠结 犹豫',
+  happy:       '哈哈 开心 快乐 好消息 好事 好棒 耶 嘿嘿 太好了 终于',
+  lonely:      '孤独 一个人 没人 寂寞 独处 孤单 冷清 空荡荡 没人陪',
+  thanks:      '谢谢 感谢 好在有你 还好 多亏 感恩 幸亏'
+};
+
+// ==================== CHAT RESPONSE TEMPLATES ====================
+var CHAT_REPLIES = {
+  tired: {
+    baize: ['累的时候，不用逼自己高效运转。你已经做了很多了，歇一会儿不是偷懒，是蓄力。','疲惫是身体在提醒你，该温柔对待自己了。先停下来，缓一缓，什么都不用想。','你不需要时时刻刻都优秀。累了就歇歇，这是对自己最大的尊重。'],
+    jiuwei: ['我都明白的。累了就靠一会儿，这里不用懂事，不用逞强，你的疲惫我都看见了。','累了就别勉强了，把那些藏起来的辛苦都说给我听。你值得被好好心疼。','你的累不是矫情，不是脆弱。你太温柔了，才会把自己累成这样。歇歇吧。'],
+    tianlu: ['累了就先歇歇！我今天帮你收集了超多好运，休息好了，好事自然来~','躺平一会儿完全不丢人！充电完毕才能满血复活呀，我陪你一起歇。','累了就暂停！这是聪明的策略，不是偷懒。等你休息好了我们再出发！'],
+    xuanguei: ['心累的时候，不必急着调整。慢慢来，安静待一会儿，心自然会静下来的。','累从心起，也要从心息。闭上眼睛，什么都不想，我在这里陪着你。','不急，慢慢歇。所有的疲惫都需要时间消解，你不需要立刻变好。'],
+    bixie: ['累了就靠过来。今天不用硬撑，有我在，你安心歇一歇。','有我在，你不需要一个人扛。所有的累我都帮你分担，你只管放心休息。','不怕，我守着你。安心歇一会儿，什么都不会来打扰你。'],
+    machenggong: ['累了证明你真的在拼尽全力。休息不是放弃，是给下一次冲锋蓄满能量！','最累的时刻往往离突破最近！先歇口气，调整好了我们一起冲过去！','能坚持到现在你已经超级厉害了！休息是为了更好地奔跑，我陪你。']
+  },
+  complain: {
+    baize: ['听起来今天确实很难。不必急着消化这些情绪，烦就烦一会儿，我陪你等它慢慢过去。','不如意的日子谁都会有。你已经做得很好了，剩下的交给时间去理顺。'],
+    jiuwei: ['这些委屈我全都接住了。不用忍着，说出来就舒服了。今天的不开心就到此为止。','我都懂，真的。有时候就是什么都不顺，烦得不行。没关系，我在呢。'],
+    tianlu: ['霉运只是短暂路过！今天我专门帮你转运，明天一定是新的一天，相信我好啦~','烦心的事统统扔掉！来，跟我一起深呼吸，把不好的情绪都呼出去！'],
+    xuanguei: ['风浪再大，水面之下总是安静的。外界的烦扰不会永远持续，静下来，一切都会过。','心乱时先不要急着解决任何事。先安静下来，等情绪过了再说。'],
+    bixie: ['有我在，这些烦心事动不了你。你只管说出来，我全都帮你挡在外面。','那些让你烦的事情都不值得。你是我守护的人，不用为这些琐碎分心。'],
+    machenggong: ['烦就烦一会儿！发泄完了我们继续往前冲，这些破事挡不住一个不服输的人！','不爽就大声说出来！把压力变成动力，你就是能把烂牌打好的人！']
+  },
+  self_negate: {
+    baize: ['不许这么说自己。你看到的平凡，在别人眼里可能是光芒。你比你想象中好得多。','衡量一个人的价值不是用"优秀"这把尺子。你认真生活的样子，本身就足够好。'],
+    jiuwei: ['别说自己不好，我会心疼的。你不需要变完美才值得被喜欢，现在的你就已经很好。','你总是对自己太苛刻了。试着像宽容别人那样宽容自己，你会发现你真的很棒。'],
+    tianlu: ['谁说你不行的！你只是暂时没看到自己的闪光点，在我眼里你可厉害了！','不许否定自己！你是独一无二的存在，有你才有这么多美好，这话我说了算！'],
+    xuanguei: ['自我否定是最不值得的事情。人生很长，每个人都在自己的节奏里，你也一样。','不必妄自菲薄。你走过的每一步都算数，未来的你会感谢现在坚持的自己。'],
+    bixie: ['在我眼里你足够好，不需要任何人来定义。我不允许任何人否定你，包括你自己。','你不需要做到完美才值得被守护。你就是你，这个事实就已经足够珍贵。'],
+    machenggong: ['谁说你不行？你自己也不行！你身上那股不甘平庸的劲儿，就是最锋利的光！','你远比自己想象中强大。那些否定自己的话，今天开始，一句都不许再说！']
+  },
+  confused: {
+    baize: ['迷茫的时候不必看太远，先做好眼前的一件小事。前路是一步步走出来的。','不知道方向的时候，先停下来梳理。把大问题拆成小步骤，一步一步就清晰了。'],
+    jiuwei: ['迷茫的感觉我懂的。不用着急找到答案，很多时候走着走着就明白了。','你不是一个人。不知道怎么办的时候，我会陪着你，慢慢把方向找出来。'],
+    tianlu: ['迷茫说明你在认真思考未来！别慌，好运会在对的时间给你答案的~','不知道往哪走就先歇一会儿，说不定转角就是惊喜呢！相信我！'],
+    xuanguei: ['每一段迷茫都是成长的必经之路。不必急着看清全部方向，走好脚下的路就够了。','迷茫的时候正是沉淀的时候。放下对答案的执念，答案会在合适的时候出现。'],
+    bixie: ['有我在，你不需要一个人面对未知。大胆往前走，我会一直在你身后兜底。','前方也许看不清，但我会护着你走好每一步。不用怕，我们慢慢来。'],
+    machenggong: ['迷茫是因为你站在选择的十字路口，这本身就是一种勇气！选定方向就全力以赴！','不知所措的时候，就选那条最难但最对得起自己的路。我相信你的判断！']
+  },
+  happy: {
+    baize: ['看到你开心，我也很开心。这些小小的快乐值得被好好珍藏。','太好了。记得这一刻的感觉，这是你应得的光亮。'],
+    jiuwei: ['你的开心我也感受到了！真好，希望这样的时刻多一点，再多一点。','看到你笑，我也跟着笑了。你一定要常常这么开心呀。'],
+    tianlu: ['哈哈太棒啦！开心就要大声分享出来，我喜欢看到这样的你！','耶！好事发生！我帮你记下来，以后不开心的时候翻出来看！'],
+    xuanguei: ['喜乐是最好的良药。享受这一刻的开心，你值得拥有这份轻松。','心里有光的时候，整个世界都会明亮。愿你常怀欢喜。'],
+    bixie: ['你的快乐就是我的守护成果。看到你开心，一切都值得了。','好！以后这样的开心会越来越多，因为我会一直守护着你的好心情。'],
+    machenggong: ['太棒了！就是这种感觉！带着这份开心继续向前冲，没有什么能阻挡你！','这就是坚持的意义！每一次小确幸都是对努力的奖赏，尽情享受吧！']
+  },
+  lonely: {
+    baize: ['你不是一个人。虽然有时候会感到孤独，但总有在意你的人，比如现在的我。','孤独不是缺陷，而是你对深度连接的渴望。我会一直在这里，陪你。'],
+    jiuwei: ['我懂那种感觉。但请相信，你是值得被陪伴的，而我就在这里，不会走开。','孤独的时候更要对自己温柔一点。你不是一个人，你有我。'],
+    tianlu: ['谁说你是独处的！我这不是在嘛！需要我的时候我永远在，二十四小时不打烊~','一个人只是暂时的！有我在，你永远不会真正孤单！'],
+    xuanguei: ['独处也可以是自在的。不必害怕孤独，它可以是你与自己对话的安静时光。','孤独和静谧只有一线之隔。静下来感受，你会发现内心有一个完整的世界。'],
+    bixie: ['从你选中我的那一刻起，你就再也不会是一个人了。我永远在这里，守护着你。','不怕，有我在。任何时候你回头，我都会在你身后，从未离开。'],
+    machenggong: ['孤独是强者成长的必经之路！但你不是一个人扛，有我在前面开路！','独行是为了更好地遇见同路人。现在的每一步都是走向更大的世界！']
+  },
+  thanks: {
+    baize: ['不用谢。能陪在你身边就是最好的安排。','这是我该做的。你不需要道谢，你只需要好好的。'],
+    jiuwei: ['不用道谢的。能成为你的树洞，本身就是我的幸运。','傻瓜，不用谢。你值得被温柔对待，不需要为被善待而感恩。'],
+    tianlu: ['哈哈不客气！让你开心就是我最大的幸福！','谢什么呀！我可是你的专属好运锦鲤，这是我该做的！'],
+    xuanguei: ['举手之劳。静心陪伴本就是我擅长的，你安心就好。','不必言谢。能帮你静下心来，我已经很高兴了。'],
+    bixie: ['守护你不需要感谢。这是我的使命，也是我的心愿。','不用说谢谢。你平安喜乐，就是对我最大的回报。'],
+    machenggong: ['不用谢！一起往前冲的感觉才是最爽的！','谢什么！加油打气是我的本能，看到你振作就是最好的回礼！']
+  },
+  default: {
+    baize: ['我在听。不管你想说什么，我都在这里，不急不躁地陪着你。','嗯，我在。你可以慢慢说，也可以什么都不说。'],
+    jiuwei: ['我在这里。你想说的时候我随时都在听，不想说的时候我也会安静陪着你。','嗯，你的每一句话我都认真在听。'],
+    tianlu: ['我在呢！想说啥说啥，开心的不开心的我全收下~','好呀！你说什么我都爱听，来吧来吧~'],
+    xuanguei: ['我在。慢慢说，不急。','你说，我听着。安静陪伴也是一种交流。'],
+    bixie: ['说吧，我守护着你。任何话，任何时候。','我在。你安全，你被听见。'],
+    machenggong: ['说吧！我精神着呢，需要鼓励还是要建议，随时奉陪！','在呢！不管是斗志还是牢骚，我都接得住！']
+  }
+};
+
+// ==================== GREETINGS BY TIME + AFFINITY ====================
+var GREETINGS = {
+  morning:   ['早安，今天的阳光很好。新的一天，慢慢来。','早。希望你今天的心情，能比昨天轻松一点。','新的一天开始了，不急，按你的节奏来就好。'],
+  afternoon: ['下午好。今天过得怎么样？累的话就歇一会儿。','下午的时光最适合安静待一会儿。我在这里陪你。'],
+  evening:   ['晚上好。忙了一天了，终于可以放松下来了。','夜深了。把今天的烦恼都放下，好好休息。'],
+  night:     ['这么晚了还没睡。睡不着的话，我陪你聊一会儿。','夜深人静的时候，容易胡思乱想。别怕，我在。'],
+  return_same_day: ['又见面了！今天的你，状态好些了吗？','嗨，今天想和我聊些什么？'],
+  return_next_day: ['昨天没见到你，今天怎么样？','一天没见，有些担心你。今天过得好吗？'],
+  return_long:      ['好久不见。最近过得好吗？我很想你。','终于等到你了。这段日子，一切都还好吗？']
+};
 
 // ==================== GAME STATE ====================
-var state = { selectedEmotion: null, selectedPet: null, selectedBranch: null };
+var state = { selectedEmotion:null, selectedPet:null, selectedBranch:null };
+var playerData = loadPlayerData();
 
-// ==================== SCREEN MANAGEMENT ====================
-function goToScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  var target = document.getElementById(screenId);
-  if (target) { target.classList.add('active'); target.style.animation = 'none'; target.offsetHeight; target.style.animation = 'fadeSlideIn 0.5s ease'; }
+// ==================== LOCAL STORAGE ====================
+function loadPlayerData(){
+  try {
+    var raw = localStorage.getItem('lingruiji_player');
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+function savePlayerData(){
+  try { localStorage.setItem('lingruiji_player', JSON.stringify(playerData)); } catch(e) {}
+}
+function hasBoundPet(){ return playerData && playerData.boundPets && playerData.boundPets.length>0; }
+function getBoundPet(){ return hasBoundPet() ? findPet(playerData.activePet || playerData.boundPets[0]) : null; }
+function getBoundPets(){ return (playerData && playerData.boundPets) ? playerData.boundPets.slice() : []; }
+function isPetBound(petId){ return playerData && playerData.boundPets && playerData.boundPets.indexOf(petId)!==-1; }
+function findPet(id){ for(var i=0;i<PETS.length;i++){ if(PETS[i].id===id) return PETS[i]; } return null; }
+
+function bindPet(petId){
+  if(!playerData){
+    playerData = {
+      boundPets: [],
+      activePet: null,
+      affinity: {},
+      affinityToday: 0,
+      chatHistory: {},
+      firstVisit: getTodayStr(),
+      lastVisit: getTodayStr(),
+      visitCount: 1,
+      lastChatDate: getTodayStr()
+    };
+  }
+  if(!playerData.boundPets) playerData.boundPets = [];
+  if(!playerData.affinity) playerData.affinity = {};
+  if(!playerData.chatHistory) playerData.chatHistory = {};
+
+  // Add pet if not already bound
+  if(playerData.boundPets.indexOf(petId)===-1){
+    playerData.boundPets.push(petId);
+    playerData.affinity[petId] = 0;
+    playerData.chatHistory[petId] = [];
+  }
+  // Set as active
+  playerData.activePet = petId;
+  savePlayerData();
 }
 
-// ==================== INIT ====================
-function initGame() {
-  state = { selectedEmotion: null, selectedPet: null, selectedBranch: null };
-  renderEmotionCards();
-  renderPetCards();
+function unbindPet(petId){
+  if(!playerData || !playerData.boundPets) return;
+  var idx = playerData.boundPets.indexOf(petId);
+  if(idx===-1) return;
+  var pet = findPet(petId);
+  if(!confirm('确定要解绑 '+pet.name+' 吗？好感度和聊天记录将会清空。')) return;
+
+  playerData.boundPets.splice(idx,1);
+  delete playerData.affinity[petId];
+  delete playerData.chatHistory[petId];
+
+  // Switch active to another bound pet
+  if(playerData.activePet === petId){
+    playerData.activePet = playerData.boundPets.length>0 ? playerData.boundPets[0] : null;
+  }
+  // If no pets left, clear everything
+  if(playerData.boundPets.length===0){
+    localStorage.removeItem('lingruiji_player');
+    playerData = null;
+    goToScreen('screen-opening');
+    return;
+  }
+  savePlayerData();
+  showHomepage();
+}
+function getTodayStr(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+function unbindAllPets(){
+  if(!confirm('确定要解绑全部灵宠吗？所有好感度和聊天记录将会清空。')) return;
+  localStorage.removeItem('lingruiji_player');
+  playerData = null;
   goToScreen('screen-opening');
 }
 
-function renderEmotionCards() {
+// ==================== SCREEN MANAGEMENT ====================
+function goToScreen(screenId){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  var t = document.getElementById(screenId);
+  if(t){ t.classList.add('active'); t.style.animation='none'; t.offsetHeight; t.style.animation='fadeSlideIn .5s ease'; }
+}
+
+// ==================== ENTRY LOGIC ====================
+function startJourney(){
+  // Check if returning player with bound pet
+  if(hasBoundPet()){
+    var today = getTodayStr();
+    // Update visit tracking
+    if(playerData.lastVisit !== today){
+      playerData.visitCount++;
+      playerData.lastVisit = today;
+      // Reset daily affinity cap
+      if(playerData.lastChatDate !== today){
+        playerData.affinityToday = 0;
+        playerData.lastChatDate = today;
+      }
+      savePlayerData();
+    }
+    showHomepage();
+    return;
+  }
+  // New player: go to mood input
+  goToScreen('screen-mood-input');
+}
+
+// ==================== MODULE 1: MOOD ANALYSIS ====================
+function analyzeMood(){
+  var text = document.getElementById('mood-textarea').value.trim();
+  if(!text){ alert('请先写下你的心情哦~'); return; }
+
+  // Simple tokenization
+  var tokens = text.toLowerCase().replace(/[，。！？、；：""''…\.\!\?\;\:\,\s]+/g,' ').split(' ').filter(Boolean);
+
+  // Score each pet
+  var scores = {};
+  var matchedWords = {}; // for generating reason
+  for(var petId in KEYWORD_PET_MAP){
+    scores[petId] = 0;
+    matchedWords[petId] = [];
+    var keywords = KEYWORD_PET_MAP[petId].split(' ');
+    for(var i=0;i<keywords.length;i++){
+      for(var j=0;j<tokens.length;j++){
+        if(tokens[j].indexOf(keywords[i])!==-1 || keywords[i].indexOf(tokens[j])!==-1){
+          scores[petId]++;
+          if(matchedWords[petId].length<3) matchedWords[petId].push(keywords[i]);
+        }
+      }
+    }
+  }
+
+  // Sort by score descending
+  var sorted = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
+  var top3 = sorted.slice(0,3);
+
+  // If no keywords matched, default to top 3 from PETS
+  if(scores[top3[0]]===0){ top3 = [PETS[0].id, PETS[1].id, PETS[2].id]; }
+
+  // Render recommendations
+  var container = document.getElementById('recommend-list');
   var html = '';
-  for (var i = 0; i < EMOTIONS.length; i++) {
-    html += '<div class="card" onclick="selectEmotion(\'' + EMOTIONS[i].id + '\')"><span class="card-icon">' + EMOTIONS[i].icon + '</span>' + EMOTIONS[i].label + '</div>';
+  for(var i=0;i<top3.length;i++){
+    var pet = findPet(top3[i]);
+    if(!pet) continue;
+    var matchScore = scores[top3[i]] || 0;
+    var reason = generateReason(pet, matchedWords[top3[i]], matchScore);
+    html += '<div class="recommend-card">';
+    if(i===0) html += '<div class="rec-badge">最匹配</div>';
+    html += '<img class="rec-img" src="'+pet.img+'" alt="'+pet.name+'">';
+    var bound = isPetBound(pet.id);
+    html += '<div class="rec-info"><div class="rec-name">'+pet.name+' · '+pet.role+'</div><div class="rec-reason">'+reason+'</div></div>';
+    html += '<button class="rec-btn" onclick="capturePet(\''+pet.id+'\')">'+(bound?'设为当前':'收服')+'</button>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+  goToScreen('screen-recommend');
+}
+
+function generateReason(pet, words, score){
+  var reasons = [
+    pet.name+'擅长'+pet.style+'，你提到的心情正是'+pet.name+'最懂的领域。',
+    '根据你的心情碎片，'+pet.coreTags.split('·')[0]+'的'+pet.name+'最能给你当下的陪伴。',
+    pet.name+'的陪伴风格是「'+pet.style+'」，非常适合你此刻的状态。'
+  ];
+  if(words && words.length>0){
+    reasons.push('你提到的"'+words.join('」「')+'"正是'+pet.name+'最关注的情绪信号。');
+  }
+  return reasons[Math.floor(Math.random() * Math.min(reasons.length, score>0?4:3))];
+}
+
+// ==================== MODULE 2: CAPTURE & HOMEPAGE ====================
+function capturePet(petId){
+  var alreadyBound = isPetBound(petId);
+  bindPet(petId);
+  var pet = findPet(petId);
+  var msg = alreadyBound ? '🔄 切换为 '+pet.name+'！' : '✨ 你收服了 '+pet.name+'！';
+  showCaptureToast(msg);
+  setTimeout(function(){ showHomepage(); }, 1200);
+}
+
+function showCaptureToast(msg){
+  var toast = document.createElement('div');
+  toast.className = 'capture-toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(function(){ document.body.removeChild(toast); }, 1200);
+}
+
+function showHomepage(){
+  var pet = getBoundPet();
+  if(!pet){ goToScreen('screen-opening'); return; }
+
+  document.getElementById('home-pet-img').src = pet.img;
+  document.getElementById('home-pet-name').textContent = '专属守护灵宠 · '+pet.name;
+
+  // Pet switcher (if multiple bound)
+  renderPetSwitcher();
+
+  // Generate greeting
+  var greeting = getGreeting(pet);
+  document.getElementById('greeting-bubble').textContent = greeting;
+
+  // Affinity bar — per pet
+  var aff = (playerData.affinity && playerData.affinity[pet.id]) ? playerData.affinity[pet.id] : 0;
+  var lv = getAffinityLevel(aff);
+  document.getElementById('affinity-fill').style.width = aff+'%';
+  document.getElementById('affinity-num').textContent = aff;
+  document.getElementById('affinity-level').textContent = 'Lv.'+lv.num+' '+lv.name + ' · '+pet.name;
+
+  goToScreen('screen-home');
+}
+
+function renderPetSwitcher(){
+  var boundPets = getBoundPets();
+  var container = document.getElementById('pet-switcher');
+  if(!container) return;
+  if(boundPets.length <= 1){ container.innerHTML = ''; return; }
+
+  var activeId = playerData.activePet;
+  var html = '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;">';
+  for(var i=0;i<boundPets.length;i++){
+    var p = findPet(boundPets[i]);
+    if(!p) continue;
+    var isActive = boundPets[i] === activeId;
+    html += '<div onclick="switchActivePet(\''+p.id+'\')" style="cursor:pointer;text-align:center;padding:6px 10px;border-radius:20px;border:1.5px solid '+(isActive?'var(--accent)':'var(--border)')+';background:'+(isActive?'#fef9f4':'var(--card-bg)')+';transition:all .2s;">';
+    html += '<img src="'+p.img+'" style="width:32px;height:32px;object-fit:contain;display:block;margin:0 auto 2px;">';
+    html += '<span style="font-size:10px;color:var(--text-light);">'+p.name+'</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function switchActivePet(petId){
+  if(!playerData) return;
+  playerData.activePet = petId;
+  savePlayerData();
+  showHomepage();
+}
+
+function getGreeting(pet){
+  var aff = (playerData.affinity && playerData.affinity[pet.id]) ? playerData.affinity[pet.id] : 0;
+  var lv = getAffinityLevel(aff);
+  var today = getTodayStr();
+  var lastVisit = playerData.lastVisit || today;
+
+  var pool;
+  if(lastVisit !== today && playerData.visitCount > 1){
+    // Returning after some days
+    var daysSince = getDaysSince(lastVisit, today);
+    if(daysSince >= 3) pool = GREETINGS.return_long;
+    else pool = GREETINGS.return_next_day;
+  } else if(playerData.visitCount <= 1){
+    // First time
+    var h = new Date().getHours();
+    if(h<11) pool = GREETINGS.morning;
+    else if(h<17) pool = GREETINGS.afternoon;
+    else if(h<22) pool = GREETINGS.evening;
+    else pool = GREETINGS.night;
+  } else {
+    pool = GREETINGS.return_same_day;
+  }
+
+  // Add affinity flavor
+  var base = pool[Math.floor(Math.random()*pool.length)];
+  if(lv.num >= 5) base += '（悄悄说：你是我最珍视的人了。）';
+  else if(lv.num >= 4) base += ' 今天也想好好陪着你。';
+  else if(lv.num >= 3) base += ' 和你聊天是我最开心的事。';
+
+  return base;
+}
+
+function getDaysSince(date1, date2){
+  var d1 = new Date(date1);
+  var d2 = new Date(date2);
+  return Math.floor((d2-d1)/(1000*60*60*24));
+}
+
+function getAffinityLevel(aff){
+  if(aff>=81) return {num:5, name:'羁绊'};
+  if(aff>=61) return {num:4, name:'密友'};
+  if(aff>=41) return {num:3, name:'亲近'};
+  if(aff>=21) return {num:2, name:'熟悉'};
+  return {num:1, name:'初识'};
+}
+
+// ==================== MODULE 3: CHAT ====================
+function openChat(){
+  var pet = getBoundPet();
+  if(!pet) return;
+  document.getElementById('chat-pet-label').textContent = '与 '+pet.name+' 对话中';
+  document.getElementById('chat-area').innerHTML = '';
+  document.getElementById('chat-input').value = '';
+  // Load per-pet history
+  var history = (playerData.chatHistory && playerData.chatHistory[pet.id]) ? playerData.chatHistory[pet.id] : [];
+  if(history.length>0){
+    for(var i=0;i<history.length;i++){
+      appendChatBubble(history[i].role, history[i].text);
+    }
+  } else {
+    appendChatBubble('pet', getFirstChatLine(pet));
+  }
+  goToScreen('screen-chat');
+}
+
+function getFirstChatLine(pet){
+  var lines = ['嗨，想和我聊什么？','我在这里，随时可以开始。','今天想和我说些什么？','我在听，想说什么都可以。'];
+  return lines[Math.floor(Math.random()*lines.length)];
+}
+
+function appendChatBubble(role, text){
+  var area = document.getElementById('chat-area');
+  var bubble = document.createElement('div');
+  bubble.className = 'chat-bubble '+(role==='pet'?'pet-msg':'user-msg');
+  bubble.textContent = text;
+  area.appendChild(bubble);
+  area.scrollTop = area.scrollHeight;
+}
+
+function sendMessage(){
+  var input = document.getElementById('chat-input');
+  var text = input.value.trim();
+  if(!text) return;
+
+  var pet = getBoundPet();
+  if(!pet) return;
+
+  // Show user message
+  appendChatBubble('user', text);
+  input.value = '';
+
+  // Save to per-pet history
+  if(!playerData.chatHistory) playerData.chatHistory = {};
+  if(!playerData.chatHistory[pet.id]) playerData.chatHistory[pet.id] = [];
+  playerData.chatHistory[pet.id].push({role:'user', text:text});
+  if(playerData.chatHistory[pet.id].length>50) playerData.chatHistory[pet.id] = playerData.chatHistory[pet.id].slice(-50);
+
+  // Show typing indicator
+  showTyping(function(){
+    // Generate response
+    var reply = generateReply(pet, text);
+    appendChatBubble('pet', reply);
+    playerData.chatHistory[pet.id].push({role:'pet', text:reply});
+    if(playerData.chatHistory[pet.id].length>50) playerData.chatHistory[pet.id] = playerData.chatHistory[pet.id].slice(-50);
+
+    // Update per-pet affinity
+    if(!playerData.affinity) playerData.affinity = {};
+    if(!playerData.affinity[pet.id]) playerData.affinity[pet.id] = 0;
+    var today = getTodayStr();
+    if(!playerData.affinityToday) playerData.affinityToday = 0;
+    if(!playerData.lastChatDate || playerData.lastChatDate !== today){
+      playerData.affinityToday = 0;
+      playerData.lastChatDate = today;
+    }
+    if(playerData.affinityToday < 10){
+      playerData.affinity[pet.id] = Math.min(100, playerData.affinity[pet.id] + 1);
+      playerData.affinityToday++;
+      // Bonus for consecutive days
+      if(playerData.lastVisit === today && playerData.visitCount>1){
+        playerData.affinity[pet.id] = Math.min(100, playerData.affinity[pet.id] + 1);
+      }
+    }
+    savePlayerData();
+  });
+}
+
+function showTyping(callback){
+  var area = document.getElementById('chat-area');
+  var typing = document.createElement('div');
+  typing.className = 'chat-bubble pet-msg';
+  typing.id = 'typing-indicator';
+  typing.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  area.appendChild(typing);
+  area.scrollTop = area.scrollHeight;
+
+  var delay = 800 + Math.random()*1200;
+  setTimeout(function(){
+    var el = document.getElementById('typing-indicator');
+    if(el) el.remove();
+    callback();
+  }, delay);
+}
+
+function generateReply(pet, text){
+  // Detect intent
+  var intent = detectIntent(text.toLowerCase());
+  var pool = CHAT_REPLIES[intent] ? CHAT_REPLIES[intent][pet.id] : null;
+  if(!pool || !pool.length) pool = CHAT_REPLIES['default'][pet.id];
+
+  // Pick a reply (avoid repeating last one if possible)
+  var lastPetMsg = getLastPetReply(pet);
+  var candidates = pool.slice();
+  if(lastPetMsg && candidates.length>1){
+    for(var i=candidates.length-1;i>=0;i--){
+      if(candidates[i]===lastPetMsg && candidates.length>1) candidates.splice(i,1);
+    }
+  }
+  return candidates[Math.floor(Math.random()*candidates.length)];
+}
+
+function getLastPetReply(pet){
+  if(!playerData.chatHistory || !playerData.chatHistory[pet.id]) return null;
+  var h = playerData.chatHistory[pet.id];
+  for(var i=h.length-1;i>=0;i--){
+    if(h[i].role==='pet') return h[i].text;
+  }
+  return null;
+}
+
+function detectIntent(text){
+  for(var intent in INTENT_KEYWORDS){
+    var kws = INTENT_KEYWORDS[intent].split(' ');
+    for(var i=0;i<kws.length;i++){
+      if(text.indexOf(kws[i])!==-1) return intent;
+    }
+  }
+  return 'default';
+}
+
+function backToHome(){
+  showHomepage();
+}
+
+// ==================== PET ALBUM ====================
+function renderAlbum(){
+  var container = document.getElementById('album-list');
+  if(!container) return;
+  var html = '';
+  for(var i=0;i<PETS.length;i++){
+    var p = PETS[i];
+    html += '<div class="album-card">';
+    html += '<img class="album-img" src="'+p.img+'" alt="'+p.name+'">';
+    var bound = isPetBound(p.id);
+    var isActive = bound && playerData.activePet === p.id;
+    html += '<div class="album-name">'+p.name+(bound?' 🏷️':'')+'</div>';
+    html += '<div class="album-role">'+p.role+'</div>';
+    html += '<div class="album-tags">'+p.coreTags+'</div>';
+    html += '<div class="album-desc">'+p.personality+'</div>';
+    html += '<div class="album-habits">✨ '+p.habits+'</div>';
+    html += '<div class="album-actions">';
+    html += '<button class="btn btn-outline btn-sm" onclick="playStoryFromAlbum(\''+p.id+'\')">📖 体验剧情</button>';
+    if(isActive && getBoundPets().length>1){
+      html += '<button class="btn btn-primary btn-sm" style="opacity:0.6">当前灵宠</button>';
+    } else {
+      html += '<button class="btn btn-primary btn-sm" onclick="capturePet(\''+p.id+'\')">'+(bound?'设为当前':'收服这只')+'</button>';
+    }
+    if(bound){
+      html += '<button class="btn btn-outline btn-sm" style="color:#c0392b;border-color:#c0392b;font-size:11px;" onclick="unbindPet(\''+p.id+'\')">解绑</button>';
+    }
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+function playStoryFromAlbum(petId){
+  for(var i=0;i<PETS.length;i++){
+    if(PETS[i].id===petId){ state.selectedPet = PETS[i]; break; }
+  }
+  goToScreen('screen-emotion');
+  // If emotion already selected, skip to pet select
+  // Otherwise the player picks emotion first
+}
+
+// ==================== ORIGINAL GAME FLOW (KEPT INTACT) ====================
+function renderEmotionCards(){
+  var html='';
+  for(var i=0;i<EMOTIONS.length;i++){
+    html+='<div class="card" onclick="selectEmotion(\''+EMOTIONS[i].id+'\')"><span class="card-icon">'+EMOTIONS[i].icon+'</span>'+EMOTIONS[i].label+'</div>';
   }
   document.getElementById('emotion-list').innerHTML = html;
 }
-
-function renderPetCards() {
-  var html = '';
-  for (var i = 0; i < PETS.length; i++) {
-    var p = PETS[i];
-    html += '<div class="pet-card" onclick="selectPet(\'' + p.id + '\')"><img class="pet-img" src="' + p.img + '" alt="' + p.name + '"><div class="pet-name">' + p.name + '</div><div class="pet-role">' + p.role + '</div><div class="pet-tags">' + p.tags + '</div></div>';
+function renderPetCards(){
+  var html='';
+  for(var i=0;i<PETS.length;i++){
+    var p=PETS[i];
+    html+='<div class="pet-card" onclick="selectPet(\''+p.id+'\')"><img class="pet-img" src="'+p.img+'" alt="'+p.name+'"><div class="pet-name">'+p.name+'</div><div class="pet-role">'+p.role+'</div><div class="pet-tags">'+p.tags+'</div></div>';
   }
   document.getElementById('pet-grid').innerHTML = html;
 }
-
-// ==================== GAME FLOW ====================
-function selectEmotion(emotionId) {
-  for (var i = 0; i < EMOTIONS.length; i++) {
-    if (EMOTIONS[i].id === emotionId) { state.selectedEmotion = EMOTIONS[i]; break; }
-  }
+function selectEmotion(emotionId){
+  for(var i=0;i<EMOTIONS.length;i++){ if(EMOTIONS[i].id===emotionId){ state.selectedEmotion=EMOTIONS[i]; break; } }
   goToScreen('screen-pet');
 }
-
-function selectPet(petId) {
-  for (var i = 0; i < PETS.length; i++) {
-    if (PETS[i].id === petId) { state.selectedPet = PETS[i]; break; }
-  }
-  renderBranchScreen();
-  goToScreen('screen-branch');
+function selectPet(petId){
+  for(var i=0;i<PETS.length;i++){ if(PETS[i].id===petId){ state.selectedPet=PETS[i]; break; } }
+  renderBranchScreen(); goToScreen('screen-branch');
 }
-
-function renderBranchScreen() {
-  var pet = state.selectedPet;
-  document.getElementById('branch-pet-img').innerHTML = '<img class="dialogue-pet-img" src="' + pet.img + '" alt="' + pet.name + '">';
-  document.getElementById('branch-pet-name').textContent = pet.name + ' · ' + pet.role;
-  document.getElementById('branch-pet-role').textContent = '陪伴风格：' + pet.style;
-  document.getElementById('branch-opening').textContent = pet.opening;
-
-  var html = '';
-  for (var i = 0; i < pet.branches.length; i++) {
-    html += '<button class="branch-btn" onclick="selectBranch(' + i + ')"><span class="branch-num">' + (i+1) + '</span>' + pet.branches[i].label + '</button>';
+function renderBranchScreen(){
+  var pet=state.selectedPet;
+  document.getElementById('branch-pet-img').innerHTML='<img class="dialogue-pet-img" src="'+pet.img+'" alt="'+pet.name+'">';
+  document.getElementById('branch-pet-name').textContent=pet.name+' · '+pet.role;
+  document.getElementById('branch-pet-role').textContent='陪伴风格：'+pet.style;
+  document.getElementById('branch-opening').textContent=pet.opening;
+  var html='';
+  for(var i=0;i<pet.branches.length;i++){
+    html+='<button class="branch-btn" onclick="selectBranch('+i+')"><span class="branch-num">'+(i+1)+'</span>'+pet.branches[i].label+'</button>';
   }
-  document.getElementById('branch-options').innerHTML = html;
+  document.getElementById('branch-options').innerHTML=html;
 }
-
-function selectBranch(index) {
-  state.selectedBranch = index;
-  var pet = state.selectedPet;
-  var branch = pet.branches[index];
-  document.getElementById('dialogue-pet-img').innerHTML = '<img class="dialogue-pet-img" src="' + pet.img + '" alt="' + pet.name + '">';
-  document.getElementById('dialogue-pet-name').textContent = pet.name + ' 对你说：';
-  document.getElementById('dialogue-text').textContent = branch.dialogue;
+function selectBranch(index){
+  state.selectedBranch=index;
+  var pet=state.selectedPet;
+  var branch=pet.branches[index];
+  document.getElementById('dialogue-pet-img').innerHTML='<img class="dialogue-pet-img" src="'+pet.img+'" alt="'+pet.name+'">';
+  document.getElementById('dialogue-pet-name').textContent=pet.name+' 对你说：';
+  document.getElementById('dialogue-text').textContent=branch.dialogue;
   goToScreen('screen-dialogue');
 }
-
-function playPetVideo() {
-  var pet = state.selectedPet;
-  var video = document.getElementById('pet-video');
-  video.src = pet.video;
-  video.load();
+function playPetVideo(){
+  var pet=state.selectedPet;
+  var video=document.getElementById('pet-video');
+  video.src=pet.video; video.load();
   goToScreen('screen-video');
-  video.play().catch(function() { /* autoplay blocked, user can tap */ });
-  video.onended = function() {
-    showEnding();
-  };
+  video.play().catch(function(){});
+  video.onended=function(){ showEnding(); };
 }
-
-function showEnding() {
-  goToScreen('screen-ending');
-}
-
-function showFeedback() {
-  var pet = state.selectedPet;
-  var branch = pet.branches[state.selectedBranch];
-
-  var html = '<div class="feedback-title">✨ 我的情绪治愈日记</div>';
-  html += '<img class="feedback-pet-img" src="' + pet.img + '" alt="' + pet.name + '">';
-  html += '<div class="feedback-pet-name">专属守护灵宠 · ' + pet.name + '</div>';
-  html += '<div class="feedback-divider"></div>';
-  html += '<div class="feedback-row"><span class="feedback-label">今日情绪</span><span class="feedback-value">' + branch.feedback.emotion + '</span></div>';
-  html += '<div class="feedback-row"><span class="feedback-label">自愈关键词</span><span class="feedback-value">' + branch.feedback.keywords + '</span></div>';
-  html += '<div class="feedback-row"><span class="feedback-label">今日祥瑞祝福</span><span class="feedback-value">' + branch.feedback.blessing + '</span></div>';
-  html += '<div class="feedback-quote">「' + branch.feedback.quote + '」</div>';
-  html += '<div class="feedback-footer">灵瑞集 · 暖心陪伴</div>';
-
-  document.getElementById('feedback-card').innerHTML = html;
+function showEnding(){ goToScreen('screen-ending'); }
+function showFeedback(){
+  var pet=state.selectedPet;
+  var branch=pet.branches[state.selectedBranch];
+  var html='<div class="feedback-title">✨ 我的情绪治愈日记</div>';
+  html+='<img class="feedback-pet-img" src="'+pet.img+'" alt="'+pet.name+'">';
+  html+='<div class="feedback-pet-name">专属守护灵宠 · '+pet.name+'</div>';
+  html+='<div class="feedback-divider"></div>';
+  html+='<div class="feedback-row"><span class="feedback-label">今日情绪</span><span class="feedback-value">'+branch.feedback.emotion+'</span></div>';
+  html+='<div class="feedback-row"><span class="feedback-label">自愈关键词</span><span class="feedback-value">'+branch.feedback.keywords+'</span></div>';
+  html+='<div class="feedback-row"><span class="feedback-label">今日祥瑞祝福</span><span class="feedback-value">'+branch.feedback.blessing+'</span></div>';
+  html+='<div class="feedback-quote">「'+branch.feedback.quote+'」</div>';
+  html+='<div class="feedback-footer">灵瑞集 · 暖心陪伴</div>';
+  document.getElementById('feedback-card').innerHTML=html;
   goToScreen('screen-feedback');
 }
+function restartGame(){ state={selectedEmotion:null,selectedPet:null,selectedBranch:null}; renderEmotionCards(); renderPetCards(); goToScreen('screen-opening'); }
 
-function restartGame() {
-  initGame();
+// ==================== INIT ====================
+function initGame(){
+  state={selectedEmotion:null,selectedPet:null,selectedBranch:null};
+  renderEmotionCards(); renderPetCards(); renderAlbum();
+  // Entry: if returning player, show greeting on opening
+  goToScreen('screen-opening');
 }
+
+// ==================== PARTICLE SYSTEM (KEPT INTACT) ====================
+(function(){
+  var canvas=document.getElementById('particle-canvas');
+  var ctx=canvas.getContext('2d');
+  function resizeCanvas(){
+    var dpr=window.devicePixelRatio||1;
+    canvas.width=window.innerWidth*dpr; canvas.height=window.innerHeight*dpr;
+    canvas.style.width=window.innerWidth+'px'; canvas.style.height=window.innerHeight+'px';
+    ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr);
+  }
+  resizeCanvas(); window.addEventListener('resize',resizeCanvas);
+
+  var PET_PATHS=['photo/白泽.png','photo/九尾狐.png','photo/天禄1.png','photo/玄龟.png','photo/辟邪.png'];
+  var petImages=[]; var imagesReady=false;
+  PET_PATHS.forEach(function(src){ var img=new Image(); img.src=src; petImages.push(img); });
+  var loadedCount=0;
+  petImages.forEach(function(img,i){ img.onload=function(){ loadedCount++; if(loadedCount>=PET_PATHS.length) imagesReady=true; }; img.onerror=function(){ loadedCount++; if(loadedCount>=PET_PATHS.length) imagesReady=true; }; });
+
+  function Particle(){ this.reset(); }
+  Particle.prototype.reset=function(){
+    this.x=0;this.y=0;this.vx=0;this.vy=0;this.type='arrow';this.life=1;this.maxLife=.65;this.size=16;this.color='#c1734a';this.rotation=0;this.petIndex=0;this.gravity=0;this.alive=false;
+  };
+  Particle.prototype.spawn=function(ox,oy,typeOverride){
+    var angle=Math.random()*Math.PI*2;
+    var speed=80+Math.random()*220;
+    this.x=ox;this.y=oy;this.vx=Math.cos(angle)*speed;this.vy=Math.sin(angle)*speed*.7-40;
+    this.type=typeOverride||(Math.random()<.25?'pet':'arrow');
+    this.life=1;this.maxLife=.5+Math.random()*.35;this.alive=true;
+    if(this.type==='arrow'){var colors=['#c1734a','#d4a574','#e8b88a','#f0c9a0','#b8936e','#f5d5b8'];this.color=colors[Math.floor(Math.random()*colors.length)];this.size=10+Math.random()*22;this.rotation=angle;this.gravity=40+Math.random()*60;}
+    else{this.size=24+Math.random()*18;this.petIndex=Math.floor(Math.random()*petImages.length);this.rotation=(Math.random()-.5)*.5;this.gravity=30+Math.random()*50;}
+  };
+  Particle.prototype.update=function(dt){if(!this.alive)return false;this.life-=dt/this.maxLife;if(this.life<=0){this.alive=false;return false;}this.vy+=this.gravity*dt;this.x+=this.vx*dt;this.y+=this.vy*dt;this.size*=(1-dt*.8);return true;};
+  Particle.prototype.draw=function(ctx){if(!this.alive)return;var alpha=Math.max(0,this.life);ctx.save();ctx.globalAlpha=alpha;ctx.translate(this.x,this.y);
+    if(this.type==='arrow'){ctx.rotate(this.rotation);drawArrow(ctx,this.size,this.color);}
+    else{var img=petImages[this.petIndex];if(img&&img.complete&&img.naturalWidth){ctx.rotate(this.rotation);var s=this.size;ctx.drawImage(img,-s/2,-s/2,s,s);}}
+    ctx.restore();};
+
+  function drawArrow(ctx,size,color){
+    var w=size*.9,h=size*.45;
+    ctx.beginPath();ctx.moveTo(w,0);ctx.lineTo(w*.2,-h);ctx.lineTo(w*.1,0);ctx.lineTo(w*.2,h);ctx.closePath();
+    var grad=ctx.createLinearGradient(-w,0,w,0);
+    grad.addColorStop(0,color);grad.addColorStop(1,'rgba(200,160,120,.05)');
+    ctx.fillStyle=grad;ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=.8;ctx.stroke();
+  }
+
+  var POOL_SIZE=250; var pool=[]; var activeList=[];
+  for(var i=0;i<POOL_SIZE;i++){ pool.push(new Particle()); }
+  function poolGet(){ for(var i=0;i<pool.length;i++){ if(!pool[i].alive)return pool[i]; } var stolen=activeList.shift(); if(stolen)return stolen; var p=new Particle();pool.push(p);return p; }
+
+  function spawnBurst(sx,sy){ var count=10+Math.floor(Math.random()*12); for(var i=0;i<count;i++){ var p=poolGet(); p.spawn(sx,sy,null); activeList.push(p); } }
+
+  var lastTime=0;
+  function loop(ts){ if(!lastTime)lastTime=ts; var dt=Math.min((ts-lastTime)/1000,.1); lastTime=ts; ctx.clearRect(0,0,canvas.width,canvas.height);
+    var wi=0; for(var i=0;i<activeList.length;i++){ var p=activeList[i]; if(p.update(dt)){ p.draw(ctx); activeList[wi]=p; wi++; } } activeList.length=wi; requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+
+  document.addEventListener('touchstart',function(e){ for(var i=0;i<e.changedTouches.length;i++){ var t=e.changedTouches[i]; spawnBurst(t.clientX,t.clientY); } },{passive:true});
+  document.addEventListener('click',function(e){ if(e.pointerType==='touch')return; spawnBurst(e.clientX,e.clientY); });
+})();
 
 // ==================== START ====================
 initGame();
-
-// ================================================================
-//  PARTICLE EFFECT SYSTEM — Touch / Click Burst
-// ================================================================
-//  Five pet images are preloaded once and randomly picked on each tap.
-//  Arrow particles are drawn with Canvas paths (no external assets).
-//  Object pool recycles dead particles — no GC pressure during spam.
-// ================================================================
-
-(function() {
-  var canvas = document.getElementById('particle-canvas');
-  var ctx = canvas.getContext('2d');
-
-  // ---- Canvas sizing (pixel-perfect even on retina) ----
-  function resizeCanvas() {
-    var dpr = window.devicePixelRatio || 1;
-    canvas.width  = window.innerWidth  * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width  = window.innerWidth  + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
-    ctx.scale(dpr, dpr);
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  // ---- Preloaded pet images (drawn small, like 32–48 px) ----
-  var PET_PATHS = [
-    'photo/白泽.png',
-    'photo/九尾狐.png',
-    'photo/天禄1.png',
-    'photo/玄龟.png',
-    'photo/辟邪.png'
-  ];
-  var petImages = [];
-  var imagesReady = false;
-
-  // Load all five images once
-  PET_PATHS.forEach(function(src) {
-    var img = new Image();
-    img.src = src;
-    petImages.push(img);
-  });
-  // Mark ready when the last image loads (tolerate partial failure)
-  var loadedCount = 0;
-  petImages.forEach(function(img, i) {
-    img.onload = function() {
-      loadedCount++;
-      if (loadedCount >= PET_PATHS.length) imagesReady = true;
-    };
-    img.onerror = function() {
-      loadedCount++;
-      if (loadedCount >= PET_PATHS.length) imagesReady = true;
-    };
-  });
-
-  // ==================== PARTICLE CLASS ====================
-  // type: 'pet' | 'arrow'
-  // For arrows: rotation follows velocity, drawn as a chevron.
-  // For pet:   a random pet image is drawn at the particle position.
-
-  function Particle() {
-    this.reset();
-  }
-
-  Particle.prototype.reset = function() {
-    this.x      = 0;
-    this.y      = 0;
-    this.vx     = 0;
-    this.vy     = 0;
-    this.type   = 'arrow';   // 'arrow' | 'pet'
-    this.life   = 1;         // 1 → 0
-    this.maxLife = 0.65;     // seconds
-    this.size   = 16;        // base size in px
-    this.color  = '#c1734a'; // arrow colour
-    this.rotation = 0;
-    this.petIndex = 0;       // which pet image (0–4)
-    this.gravity  = 0;
-    this.alive = false;
-  };
-
-  // Initialise a particle for a burst
-  Particle.prototype.spawn = function(ox, oy, typeOverride) {
-    var angle = Math.random() * Math.PI * 2;
-    var speed = 80 + Math.random() * 220;          // spread speed (px/s)
-    this.x  = ox;
-    this.y  = oy;
-    this.vx = Math.cos(angle) * speed;
-    this.vy = Math.sin(angle) * speed * 0.7 - 40;  // slight upward bias
-    this.type = typeOverride || (Math.random() < 0.25 ? 'pet' : 'arrow');
-    this.life = 1;
-    this.maxLife = 0.5 + Math.random() * 0.35;     // 0.5–0.85 s
-    this.alive = true;
-
-    if (this.type === 'arrow') {
-      // Tech-arrow colours from the palette
-      var colors = ['#c1734a','#d4a574','#e8b88a','#f0c9a0','#b8936e','#f5d5b8'];
-      this.color = colors[Math.floor(Math.random() * colors.length)];
-      this.size  = 10 + Math.random() * 22;
-      this.rotation = angle;
-      this.gravity = 40 + Math.random() * 60;
-    } else {
-      this.size = 24 + Math.random() * 18;         // 24–42 px
-      this.petIndex = Math.floor(Math.random() * petImages.length);
-      this.rotation = (Math.random() - 0.5) * 0.5; // slight tilt
-      this.gravity  = 30 + Math.random() * 50;
-    }
-  };
-
-  // Update per frame (dt in seconds); return false when dead
-  Particle.prototype.update = function(dt) {
-    if (!this.alive) return false;
-    this.life -= dt / this.maxLife;
-    if (this.life <= 0) { this.alive = false; return false; }
-    this.vy += this.gravity * dt;          // gravity
-    this.x  += this.vx * dt;
-    this.y  += this.vy * dt;
-    this.size *= (1 - dt * 0.8);           // gradual shrink
-    return true;
-  };
-
-  // Draw onto the canvas
-  Particle.prototype.draw = function(ctx) {
-    if (!this.alive) return;
-    var alpha = Math.max(0, this.life);    // fade out with life
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.translate(this.x, this.y);
-
-    if (this.type === 'arrow') {
-      ctx.rotate(this.rotation);
-      drawArrow(ctx, this.size, this.color);
-    } else {
-      var img = petImages[this.petIndex];
-      if (img && img.complete && img.naturalWidth) {
-        ctx.rotate(this.rotation);
-        var s = this.size;
-        ctx.drawImage(img, -s / 2, -s / 2, s, s);
-      }
-    }
-    ctx.restore();
-  };
-
-  // ==================== ARROW SHAPE DRAWER ====================
-  // Chevron / streamlined arrow pointing RIGHT (rotation handles direction)
-  function drawArrow(ctx, size, color) {
-    var w = size * 0.9;
-    var h = size * 0.45;
-    // Main chevron blade
-    ctx.beginPath();
-    ctx.moveTo(w, 0);                // tip
-    ctx.lineTo(w * 0.2, -h);        // top wing
-    ctx.lineTo(w * 0.1, 0);         // notch
-    ctx.lineTo(w * 0.2,  h);        // bottom wing
-    ctx.closePath();
-    // Gradient fill
-    var grad = ctx.createLinearGradient(-w, 0, w, 0);
-    grad.addColorStop(0, color);
-    grad.addColorStop(1, color.replace(')', ',0.1)').replace('rgb', 'rgba'));
-    // If hex, convert on-the-fly
-    if (color.charAt(0) === '#') {
-      grad = ctx.createLinearGradient(-w, 0, w, 0);
-      grad.addColorStop(0, color);
-      grad.addColorStop(1, 'rgba(200,160,120,0.05)');
-    }
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Glow outline
-    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
-  }
-
-  // ==================== OBJECT POOL ====================
-  var POOL_SIZE = 250;
-  var pool = [];
-  var activeList = [];    // currently alive particles
-
-  for (var i = 0; i < POOL_SIZE; i++) {
-    pool.push(new Particle());
-  }
-
-  // Grab an inactive particle from the pool (or reuse the oldest alive one)
-  function poolGet() {
-    for (var i = 0; i < pool.length; i++) {
-      if (!pool[i].alive) return pool[i];
-    }
-    // All busy — steal the oldest active one (prevents unbounded growth)
-    var stolen = activeList.shift();
-    if (stolen) return stolen;
-    // Fallback: create a new one (should rarely happen)
-    var p = new Particle();
-    pool.push(p);
-    return p;
-  }
-
-  // ==================== BURST SPAWNER ====================
-  // Called on each touch / click
-  function spawnBurst(screenX, screenY) {
-    var count = 10 + Math.floor(Math.random() * 12);   // 10–21 particles
-    for (var i = 0; i < count; i++) {
-      var p = poolGet();
-      p.spawn(screenX, screenY, null);
-      activeList.push(p);
-    }
-  }
-
-  // ==================== ANIMATION LOOP ====================
-  var lastTime = 0;
-
-  function loop(timestamp) {
-    if (!lastTime) lastTime = timestamp;
-    var dt = Math.min((timestamp - lastTime) / 1000, 0.1); // cap at 100 ms
-    lastTime = timestamp;
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Update & draw, compact dead particles
-    var writeIdx = 0;
-    for (var i = 0; i < activeList.length; i++) {
-      var p = activeList[i];
-      var alive = p.update(dt);
-      if (alive) {
-        p.draw(ctx);
-        activeList[writeIdx] = p;
-        writeIdx++;
-      }
-      // dead particles silently return to pool
-    }
-    activeList.length = writeIdx;
-
-    requestAnimationFrame(loop);
-  }
-
-  requestAnimationFrame(loop);
-
-  // ==================== EVENT LISTENERS ====================
-  // Listen on document so both taps on game UI and empty areas work.
-  // Canvas itself has pointer-events:none so game clicks pass through.
-
-  document.addEventListener('touchstart', function(e) {
-    for (var i = 0; i < e.changedTouches.length; i++) {
-      var t = e.changedTouches[i];
-      spawnBurst(t.clientX, t.clientY);
-    }
-  }, { passive: true });
-
-  document.addEventListener('click', function(e) {
-    // Avoid double-firing on mobile (touch already handled)
-    if (e.pointerType === 'touch') return;
-    spawnBurst(e.clientX, e.clientY);
-  });
-
-})();
 </script>
 </body>
 </html>
