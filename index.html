@@ -227,6 +227,15 @@
   }
   .back-link:hover { color: var(--accent); }
 
+  /* ===== Touch Particle Canvas ===== */
+  #particle-canvas {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
   @media (max-width: 440px) {
     .container { padding: 28px 18px; border-radius: 20px; }
     .pet-grid { gap: 8px; }
@@ -237,6 +246,8 @@
 </style>
 </head>
 <body>
+
+<canvas id="particle-canvas"></canvas>
 
 <div class="container" id="app">
   <!-- Screen 0: Opening -->
@@ -547,6 +558,262 @@ function restartGame() {
 
 // ==================== START ====================
 initGame();
+
+// ================================================================
+//  PARTICLE EFFECT SYSTEM — Touch / Click Burst
+// ================================================================
+//  Five pet images are preloaded once and randomly picked on each tap.
+//  Arrow particles are drawn with Canvas paths (no external assets).
+//  Object pool recycles dead particles — no GC pressure during spam.
+// ================================================================
+
+(function() {
+  var canvas = document.getElementById('particle-canvas');
+  var ctx = canvas.getContext('2d');
+
+  // ---- Canvas sizing (pixel-perfect even on retina) ----
+  function resizeCanvas() {
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width  = window.innerWidth  * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width  = window.innerWidth  + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
+    ctx.scale(dpr, dpr);
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // ---- Preloaded pet images (drawn small, like 32–48 px) ----
+  var PET_PATHS = [
+    'photo/白泽.png',
+    'photo/九尾狐.png',
+    'photo/天禄1.png',
+    'photo/玄龟.png',
+    'photo/辟邪.png'
+  ];
+  var petImages = [];
+  var imagesReady = false;
+
+  // Load all five images once
+  PET_PATHS.forEach(function(src) {
+    var img = new Image();
+    img.src = src;
+    petImages.push(img);
+  });
+  // Mark ready when the last image loads (tolerate partial failure)
+  var loadedCount = 0;
+  petImages.forEach(function(img, i) {
+    img.onload = function() {
+      loadedCount++;
+      if (loadedCount >= PET_PATHS.length) imagesReady = true;
+    };
+    img.onerror = function() {
+      loadedCount++;
+      if (loadedCount >= PET_PATHS.length) imagesReady = true;
+    };
+  });
+
+  // ==================== PARTICLE CLASS ====================
+  // type: 'pet' | 'arrow'
+  // For arrows: rotation follows velocity, drawn as a chevron.
+  // For pet:   a random pet image is drawn at the particle position.
+
+  function Particle() {
+    this.reset();
+  }
+
+  Particle.prototype.reset = function() {
+    this.x      = 0;
+    this.y      = 0;
+    this.vx     = 0;
+    this.vy     = 0;
+    this.type   = 'arrow';   // 'arrow' | 'pet'
+    this.life   = 1;         // 1 → 0
+    this.maxLife = 0.65;     // seconds
+    this.size   = 16;        // base size in px
+    this.color  = '#c1734a'; // arrow colour
+    this.rotation = 0;
+    this.petIndex = 0;       // which pet image (0–4)
+    this.gravity  = 0;
+    this.alive = false;
+  };
+
+  // Initialise a particle for a burst
+  Particle.prototype.spawn = function(ox, oy, typeOverride) {
+    var angle = Math.random() * Math.PI * 2;
+    var speed = 80 + Math.random() * 220;          // spread speed (px/s)
+    this.x  = ox;
+    this.y  = oy;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed * 0.7 - 40;  // slight upward bias
+    this.type = typeOverride || (Math.random() < 0.25 ? 'pet' : 'arrow');
+    this.life = 1;
+    this.maxLife = 0.5 + Math.random() * 0.35;     // 0.5–0.85 s
+    this.alive = true;
+
+    if (this.type === 'arrow') {
+      // Tech-arrow colours from the palette
+      var colors = ['#c1734a','#d4a574','#e8b88a','#f0c9a0','#b8936e','#f5d5b8'];
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.size  = 10 + Math.random() * 22;
+      this.rotation = angle;
+      this.gravity = 40 + Math.random() * 60;
+    } else {
+      this.size = 24 + Math.random() * 18;         // 24–42 px
+      this.petIndex = Math.floor(Math.random() * petImages.length);
+      this.rotation = (Math.random() - 0.5) * 0.5; // slight tilt
+      this.gravity  = 30 + Math.random() * 50;
+    }
+  };
+
+  // Update per frame (dt in seconds); return false when dead
+  Particle.prototype.update = function(dt) {
+    if (!this.alive) return false;
+    this.life -= dt / this.maxLife;
+    if (this.life <= 0) { this.alive = false; return false; }
+    this.vy += this.gravity * dt;          // gravity
+    this.x  += this.vx * dt;
+    this.y  += this.vy * dt;
+    this.size *= (1 - dt * 0.8);           // gradual shrink
+    return true;
+  };
+
+  // Draw onto the canvas
+  Particle.prototype.draw = function(ctx) {
+    if (!this.alive) return;
+    var alpha = Math.max(0, this.life);    // fade out with life
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(this.x, this.y);
+
+    if (this.type === 'arrow') {
+      ctx.rotate(this.rotation);
+      drawArrow(ctx, this.size, this.color);
+    } else {
+      var img = petImages[this.petIndex];
+      if (img && img.complete && img.naturalWidth) {
+        ctx.rotate(this.rotation);
+        var s = this.size;
+        ctx.drawImage(img, -s / 2, -s / 2, s, s);
+      }
+    }
+    ctx.restore();
+  };
+
+  // ==================== ARROW SHAPE DRAWER ====================
+  // Chevron / streamlined arrow pointing RIGHT (rotation handles direction)
+  function drawArrow(ctx, size, color) {
+    var w = size * 0.9;
+    var h = size * 0.45;
+    // Main chevron blade
+    ctx.beginPath();
+    ctx.moveTo(w, 0);                // tip
+    ctx.lineTo(w * 0.2, -h);        // top wing
+    ctx.lineTo(w * 0.1, 0);         // notch
+    ctx.lineTo(w * 0.2,  h);        // bottom wing
+    ctx.closePath();
+    // Gradient fill
+    var grad = ctx.createLinearGradient(-w, 0, w, 0);
+    grad.addColorStop(0, color);
+    grad.addColorStop(1, color.replace(')', ',0.1)').replace('rgb', 'rgba'));
+    // If hex, convert on-the-fly
+    if (color.charAt(0) === '#') {
+      grad = ctx.createLinearGradient(-w, 0, w, 0);
+      grad.addColorStop(0, color);
+      grad.addColorStop(1, 'rgba(200,160,120,0.05)');
+    }
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Glow outline
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  // ==================== OBJECT POOL ====================
+  var POOL_SIZE = 250;
+  var pool = [];
+  var activeList = [];    // currently alive particles
+
+  for (var i = 0; i < POOL_SIZE; i++) {
+    pool.push(new Particle());
+  }
+
+  // Grab an inactive particle from the pool (or reuse the oldest alive one)
+  function poolGet() {
+    for (var i = 0; i < pool.length; i++) {
+      if (!pool[i].alive) return pool[i];
+    }
+    // All busy — steal the oldest active one (prevents unbounded growth)
+    var stolen = activeList.shift();
+    if (stolen) return stolen;
+    // Fallback: create a new one (should rarely happen)
+    var p = new Particle();
+    pool.push(p);
+    return p;
+  }
+
+  // ==================== BURST SPAWNER ====================
+  // Called on each touch / click
+  function spawnBurst(screenX, screenY) {
+    var count = 10 + Math.floor(Math.random() * 12);   // 10–21 particles
+    for (var i = 0; i < count; i++) {
+      var p = poolGet();
+      p.spawn(screenX, screenY, null);
+      activeList.push(p);
+    }
+  }
+
+  // ==================== ANIMATION LOOP ====================
+  var lastTime = 0;
+
+  function loop(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    var dt = Math.min((timestamp - lastTime) / 1000, 0.1); // cap at 100 ms
+    lastTime = timestamp;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update & draw, compact dead particles
+    var writeIdx = 0;
+    for (var i = 0; i < activeList.length; i++) {
+      var p = activeList[i];
+      var alive = p.update(dt);
+      if (alive) {
+        p.draw(ctx);
+        activeList[writeIdx] = p;
+        writeIdx++;
+      }
+      // dead particles silently return to pool
+    }
+    activeList.length = writeIdx;
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+
+  // ==================== EVENT LISTENERS ====================
+  // Listen on document so both taps on game UI and empty areas work.
+  // Canvas itself has pointer-events:none so game clicks pass through.
+
+  document.addEventListener('touchstart', function(e) {
+    for (var i = 0; i < e.changedTouches.length; i++) {
+      var t = e.changedTouches[i];
+      spawnBurst(t.clientX, t.clientY);
+    }
+  }, { passive: true });
+
+  document.addEventListener('click', function(e) {
+    // Avoid double-firing on mobile (touch already handled)
+    if (e.pointerType === 'touch') return;
+    spawnBurst(e.clientX, e.clientY);
+  });
+
+})();
 </script>
 </body>
 </html>
